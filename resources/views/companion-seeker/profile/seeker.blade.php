@@ -26,7 +26,7 @@
                 <div><dt class="text-xs text-gray-500">نام و نام خانوادگی</dt><dd class="mt-2 font-bold text-gray-900">{{ $user->name }}</dd></div>
                 <div><dt class="text-xs text-gray-500">شماره همراه</dt><dd class="mt-2 font-bold text-gray-900" dir="ltr">{{ $user->mobile }}</dd></div>
                 <div><dt class="text-xs text-gray-500">کد ملی</dt><dd class="mt-2 font-bold text-gray-900">••••••{{ substr($user->national_code, -4) }}</dd></div>
-                <div><dt class="text-xs text-gray-500">تاریخ عضویت</dt><dd class="mt-2 font-bold text-gray-900">{{ $user->created_at?->format('Y/m/d') }}</dd></div>
+                <div><dt class="text-xs text-gray-500">تاریخ عضویت</dt><dd class="mt-2 font-bold text-gray-900">{{ \App\Support\JalaliDate::format($user->created_at) }}</dd></div>
             </dl>
         </section>
 
