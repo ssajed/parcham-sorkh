@@ -1,10 +1,10 @@
 <?php
 
-namespace App\\Modules\\Accounts\\Http\\Controllers;
+namespace App\Modules\Accounts\Http\Controllers;
 
-use App\\Http\\Controllers\\Controller;
-use Illuminate\\Http\\Request;
-use Illuminate\\View\\View;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class CompanionProfileController extends Controller
 {
