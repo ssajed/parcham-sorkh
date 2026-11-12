@@ -31,7 +31,7 @@
                         <div><p class="text-xs text-gray-500">زمان حرکت</p><p class="mt-1 font-bold text-gray-800">{{ \App\Support\JalaliDate::format($item->departure_at, 'Y/m/d H:i') }}</p></div>
                         <div><p class="text-xs text-gray-500">نوع همراهی</p><p class="mt-1 font-bold text-gray-800">{{ $item->isRoundTrip() ? 'رفت‌وبرگشت' : 'یک‌طرفه' }}</p></div>
                         @if($item->isRoundTrip())
-                            <div><p class="text-xs text-gray-500">زمان برگشت</p><p class="mt-1 font-bold text-gray-800">{{ $item->return_at?->format('Y/m/d H:i') }}</p></div>
+                            <div><p class="text-xs text-gray-500">زمان برگشت</p><p class="mt-1 font-bold text-gray-800">{{ \App\Support\JalaliDate::format($item->return_at, 'Y/m/d H:i') }}</p></div>
                         @endif
                         <div><p class="text-xs text-gray-500">تعداد افراد (با احتساب همراه‌جو)</p><p class="mt-1 font-bold text-gray-800">{{ $item->passenger_count }} نفر</p></div>
                     </div>
