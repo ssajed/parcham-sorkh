@@ -31,8 +31,17 @@
             </nav>
 
             <div class="header-action header-account-actions">
-                <a href="{{ route('companion-seeker.login') }}" class="button button-outline">ورود</a>
-                <a href="{{ route('register') }}" class="button button-primary">ثبت‌نام</a>
+                @auth
+                    <span class="header-user-name">{{ auth()->user()->name }}</span>
+
+                    <form action="{{ auth()->user()->isAdmin() ? route('admin.logout') : route('companion-seeker.logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="button button-outline">خروج</button>
+                    </form>
+                @else
+                    <a href="{{ route('companion-seeker.login') }}" class="button button-outline">ورود</a>
+                    <a href="{{ route('register') }}" class="button button-primary">ثبت‌نام</a>
+                @endauth
             </div>
 
             {{-- Mobile Navigation --}}
@@ -52,9 +61,17 @@
                     <a href="#roles">همراه‌جو و همراه‌یار</a>
                     <a href="#how-it-works">نحوه کار</a>
                     <a href="#principles">اصول ما</a>
-                    <a href="{{ route('companion-seeker.login') }}">ورود همراهان</a>
-                    <a href="{{ route('register') }}">ثبت‌نام</a>
-                    <a href="{{ route('admin.login') }}">ورود مدیریت</a>
+                    @auth
+                        <span class="mobile-user-name">{{ auth()->user()->name }}</span>
+                        <form action="{{ auth()->user()->isAdmin() ? route('admin.logout') : route('companion-seeker.logout') }}" method="POST">
+                            @csrf
+                            <button type="submit">خروج</button>
+                        </form>
+                    @else
+                        <a href="{{ route('companion-seeker.login') }}">ورود همراهان</a>
+                        <a href="{{ route('register') }}">ثبت‌نام</a>
+                        <a href="{{ route('admin.login') }}">ورود مدیریت</a>
+                    @endauth
                 </nav>
             </details>
 
