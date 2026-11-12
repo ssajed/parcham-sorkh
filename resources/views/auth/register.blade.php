@@ -506,6 +506,26 @@
                         <span class="text-2xl" aria-hidden="true">🚘</span>
                     </div>
 
+                    {{-- ظرفیت مجاز خودرو --}}
+                    <div>
+                        <label for="vehicle_capacity" class="register-label">ظرفیت مجاز سرنشین خودرو (با احتساب همراه‌یار)</label>
+                        <select
+                            id="vehicle_capacity"
+                            name="vehicle_capacity"
+                            class="register-input"
+                            @required(old('role', 'companion_seeker') === 'companion_helper')
+                            @disabled(old('role', 'companion_seeker') !== 'companion_helper')
+                        >
+                            <option value="">ظرفیت را انتخاب کنید</option>
+                            @foreach ([1, 2, 3, 4] as $capacity)
+                                <option value="{{ $capacity }}" @selected((string) old('vehicle_capacity') === (string) $capacity)>{{ $capacity }} نفر</option>
+                            @endforeach
+                        </select>
+                        @error('vehicle_capacity')
+                            <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     {{-- مدل خودرو --}}
                     <div>
                         <label for="vehicle_model" class="register-label">
@@ -851,6 +871,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const vehicleFields = document.getElementById('vehicle-fields');
 
     const vehicleModel = document.getElementById('vehicle_model');
+    const vehicleCapacity = document.getElementById('vehicle_capacity');
 
     const plateRegion = document.getElementById('vehicle_plate_region');
     const plateThree = document.getElementById('vehicle_plate_three');
@@ -859,6 +880,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const vehicleInputs = [
         vehicleModel,
+        vehicleCapacity,
         plateRegion,
         plateThree,
         plateLetter,
