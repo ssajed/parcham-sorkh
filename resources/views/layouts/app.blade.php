@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
+    <link rel="icon" href="{{ asset('icons/icon-192.svg') }}" type="image/svg+xml">
 
     <meta name="theme-color" content="#123c32">
     <meta name="description" content="@yield('meta_description', 'پرچم سرخ؛ بستری برای همیاری داوطلبانه و همراهی انسانی.')">
