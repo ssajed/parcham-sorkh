@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\EnsureAdmin;
 use App\Http\Middleware\EnsureApprovedCompanionSeeker;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -24,6 +25,12 @@ return Application::configure(basePath: dirname(__DIR__))
                 ? route('admin.login')
                 : route('companion-seeker.login')
         );
+    })
+    ->withSchedule(function (Schedule $schedule): void {
+        $schedule->command('accompaniment-requests:expire')
+            ->everyMinute()
+            ->timezone('Asia/Tehran')
+            ->withoutOverlapping();
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

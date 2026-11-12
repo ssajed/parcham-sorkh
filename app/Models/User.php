@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Modules\Accompaniment\Models\AccompanimentOffer;
 use App\Modules\Accompaniment\Models\AccompanimentRequest;
 use App\Modules\Auth\Models\CompanionRoleChangeRequest;
 use Database\Factories\UserFactory;
@@ -59,6 +60,12 @@ class User extends Authenticatable
     public function accompanimentRequests(): HasMany
     {
         return $this->hasMany(AccompanimentRequest::class, 'user_id');
+    }
+
+    /** @return HasMany<AccompanimentOffer, $this> */
+    public function accompanimentOffers(): HasMany
+    {
+        return $this->hasMany(AccompanimentOffer::class, 'helper_id');
     }
 
     /** @return HasMany<CompanionRoleChangeRequest, $this> */
