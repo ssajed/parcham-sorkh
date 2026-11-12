@@ -1,13 +1,13 @@
 <?php
 
-namespace App\\Modules\\Accompaniment\\Http\\Controllers;
+namespace App\Modules\Accompaniment\Http\Controllers;
 
-use App\\Http\\Controllers\\Controller;
-use App\\Modules\\Accompaniment\\Models\\AccompanimentRequest;
-use App\\Modules\\Accompaniment\\Requests\\AccompanimentRequestFormRequest;
-use Illuminate\\Http\\RedirectResponse;
-use Illuminate\\Http\\Request;
-use Illuminate\\View\\View;
+use App\Http\Controllers\Controller;
+use App\Modules\Accompaniment\Models\AccompanimentRequest;
+use App\Modules\Accompaniment\Requests\AccompanimentRequestFormRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class AccompanimentRequestController extends Controller
 {
