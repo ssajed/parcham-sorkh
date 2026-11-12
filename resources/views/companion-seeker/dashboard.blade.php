@@ -41,7 +41,11 @@
                         <p class="mt-2 text-sm leading-7 text-green-800">
                             امکان ثبت و پیگیری درخواست‌های همراهی برای این حساب فعال است.
                         </p>
-                        <p class="mt-3 text-xs text-green-700">بخش ثبت درخواست در مرحله توسعه است.</p>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <a href="{{ route('companion-seeker.requests.create') }}" class="rounded-full bg-green-900 px-4 py-2 text-xs font-bold text-white hover:bg-green-800">ثبت درخواست همراهی</a>
+                            <a href="{{ route('companion-seeker.requests.index') }}" class="rounded-full border border-green-700 px-4 py-2 text-xs font-bold text-green-900 hover:bg-green-100">درخواست‌های من</a>
+                            <a href="{{ route('companion-seeker.profile.seeker') }}" class="rounded-full border border-gray-300 px-4 py-2 text-xs font-bold text-gray-700 hover:bg-gray-100">پروفایل همراه‌جو</a>
+                        </div>
                     </div>
                 @endif
 
@@ -51,7 +55,9 @@
                         <p class="mt-2 text-sm leading-7 text-gray-600">
                             امکان مشاهده درخواست‌ها و اعلام آمادگی برای همراهی برای این حساب فعال است.
                         </p>
-                        <p class="mt-3 text-xs text-gray-500">بخش همراه‌یار در مرحله توسعه است.</p>
+                        <div class="mt-4">
+                            <a href="{{ route('companion-seeker.profile.helper') }}" class="inline-flex rounded-full border border-gray-300 px-4 py-2 text-xs font-bold text-gray-700 hover:bg-gray-100">پروفایل همراه‌یار و خودرو</a>
+                        </div>
                     </div>
                 @endif
             </div>
