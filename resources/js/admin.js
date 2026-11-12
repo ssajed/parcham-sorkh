@@ -74,3 +74,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Keep the initial state synchronized.
     closeSidebar();
 });
+
+
+// Render the current Tehran date using the Persian calendar.
+document.addEventListener('DOMContentLoaded', () => {
+    const dateElement = document.querySelector('[data-tehran-date]');
+    if (!dateElement) return;
+
+    try {
+        dateElement.textContent = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
+            dateStyle: 'full',
+            timeStyle: 'short',
+            timeZone: 'Asia/Tehran',
+        }).format(new Date());
+    } catch (error) {
+        // Keep the fallback text when Persian calendar support is unavailable.
+    }
+});
