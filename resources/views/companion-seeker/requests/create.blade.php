@@ -45,10 +45,10 @@
                 <div data-jalali-picker>
                     <div data-jalali-ui hidden>
                         <label for="departure_at_jalali" class="mb-2 block text-sm font-bold">تاریخ حرکت (شمسی)</label>
-                        <input id="departure_at_jalali" type="text" data-jalali-date autocomplete="off" inputmode="numeric" placeholder="۱۴۰۵/۰۱/۰۱" required class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm">
+                        <input id="departure_at_jalali" type="text" data-jalali-date autocomplete="off" inputmode="numeric" placeholder="۱۴۰۵/۰۱/۰۱" required class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm" disabled>
                         <div data-jalali-calendar hidden class="mt-2 rounded-xl border border-gray-200 bg-white p-3 shadow-lg" role="dialog" aria-label="انتخاب تاریخ حرکت"></div>
                         <label for="departure_at_time" class="mb-2 mt-3 block text-sm font-bold">ساعت حرکت</label>
-                        <input id="departure_at_time" type="time" data-jalali-time required class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm" dir="ltr">
+                        <input id="departure_at_time" type="time" data-jalali-time required class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm" dir="ltr" disabled>
                     </div>
                     <label data-jalali-fallback-label for="departure_at" class="mb-2 block text-sm font-bold">زمان حرکت</label>
                     <input id="departure_at" name="departure_at" type="datetime-local" value="{{ old('departure_at') }}" required data-jalali-native class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm" dir="ltr">
@@ -56,10 +56,10 @@
                 <div id="return-field" @if(old('type') !== 'round_trip') hidden @endif data-jalali-picker>
                     <div data-jalali-ui hidden>
                         <label for="return_at_jalali" class="mb-2 block text-sm font-bold">تاریخ برگشت (شمسی)</label>
-                        <input id="return_at_jalali" type="text" data-jalali-date autocomplete="off" inputmode="numeric" placeholder="۱۴۰۵/۰۱/۰۱" required class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm">
+                        <input id="return_at_jalali" type="text" data-jalali-date autocomplete="off" inputmode="numeric" placeholder="۱۴۰۵/۰۱/۰۱" required class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm" disabled>
                         <div data-jalali-calendar hidden class="mt-2 rounded-xl border border-gray-200 bg-white p-3 shadow-lg" role="dialog" aria-label="انتخاب تاریخ برگشت"></div>
                         <label for="return_at_time" class="mb-2 mt-3 block text-sm font-bold">ساعت برگشت</label>
-                        <input id="return_at_time" type="time" data-jalali-time required class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm" dir="ltr">
+                        <input id="return_at_time" type="time" data-jalali-time required class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm" dir="ltr" disabled>
                     </div>
                     <label data-jalali-fallback-label for="return_at" class="mb-2 block text-sm font-bold">زمان برگشت</label>
                     <input id="return_at" name="return_at" type="datetime-local" value="{{ old('return_at') }}" data-jalali-native @required(old('type') === 'round_trip') class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm" dir="ltr">
