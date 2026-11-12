@@ -72,7 +72,8 @@ Route::prefix('companion')->name('companion-seeker.')->group(function (): void {
     });
 });
 
-// Public registration.
+// Public information and registration.
+Route::view('/terms', 'pages.terms')->name('terms');
 Route::view('/register', 'auth.register')->name('register');
 
 Route::post('/register', [RegisterController::class, 'store'])
