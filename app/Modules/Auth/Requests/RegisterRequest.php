@@ -21,6 +21,7 @@ class RegisterRequest extends FormRequest
         foreach ([
             'national_code',
             'mobile',
+            'vehicle_capacity',
             'vehicle_plate_region',
             'vehicle_plate_three',
             'vehicle_plate_last',
@@ -97,6 +98,13 @@ class RegisterRequest extends FormRequest
                 ]),
             ],
 
+            'vehicle_capacity' => [
+                Rule::requiredIf($isCompanionHelper),
+                Rule::prohibitedIf(!$isCompanionHelper),
+                'integer',
+                'between:1,4',
+            ],
+
             'vehicle_model' => [
                 Rule::requiredIf($isCompanionHelper),
                 Rule::prohibitedIf(!$isCompanionHelper),
@@ -158,6 +166,11 @@ class RegisterRequest extends FormRequest
 
             'role.required' => 'انتخاب نوع حساب الزامی است.',
             'role.in' => 'نوع حساب انتخاب‌شده معتبر نیست.',
+
+            'vehicle_capacity.required' => 'ظرفیت مجاز خودرو را انتخاب کنید.',
+            'vehicle_capacity.integer' => 'ظرفیت خودرو باید عدد صحیح باشد.',
+            'vehicle_capacity.between' => 'ظرفیت خودرو باید بین ۱ تا ۴ نفر باشد.',
+            'vehicle_capacity.prohibited' => 'اطلاعات ظرفیت خودرو برای همراه‌جو نباید ارسال شود.',
 
             'vehicle_model.required' => 'وارد کردن مدل خودرو الزامی است.',
             'vehicle_model.max' => 'مدل خودرو نمی‌تواند بیشتر از ۱۰۰ نویسه باشد.',
