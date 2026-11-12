@@ -35,7 +35,7 @@
             <dl class="mt-6 grid gap-5 sm:grid-cols-2">
                 <div><dt class="text-xs text-gray-500">مدل خودرو</dt><dd class="mt-2 font-bold text-gray-900">{{ $user->vehicle_model ?: 'ثبت نشده' }}</dd></div>
                 <div><dt class="text-xs text-gray-500">شماره پلاک ثبت‌شده</dt><dd class="mt-2 font-bold text-gray-900" dir="ltr">{{ $user->vehicle_plate ?: 'ثبت نشده' }}</dd></div>
-                <div><dt class="text-xs text-gray-500">ظرفیت مجاز سرنشین</dt><dd class="mt-2 font-bold text-gray-900">{{ $user->vehicle_capacity ? $user->vehicle_capacity.' نفر' : 'ثبت نشده' }}</dd></div>
+                <div><dt class="text-xs text-gray-500">ظرفیت مجاز همراهی</dt><dd class="mt-2 font-bold text-gray-900">{{ $user->vehicle_capacity ? $user->vehicle_capacity.' نفر' : 'ثبت نشده' }}</dd></div>
             </dl>
             <p class="mt-5 rounded-xl bg-amber-50 p-4 text-xs leading-7 text-amber-900">برای تغییر اطلاعات خودرو، فعلاً از طریق مدیریت سامانه پیگیری کنید تا اطلاعات جدید بررسی و تأیید شود.</p>
         </section>
