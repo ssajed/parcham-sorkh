@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'پرچم سرخ؛ سامانه حمل‌ونقل رایگان')
+@section('title', 'پرچم سرخ؛ با هم برای همراهی')
 
-@section('meta_description', 'پرچم سرخ، سامانه حمل‌ونقل رایگان و بشردوستانه است؛ بستری برای درخواست جابه‌جایی رایگان و اعلام آمادگی داوطلبانه همراه‌یاران برای کمک به دیگران.')
+@section('meta_description', 'پرچم سرخ؛ بستری برای همراهی داوطلبانه و انسانی، پیوند همراه‌جویان و همراه‌یاران و کمک به یکدیگر.')
 
 @section('content')
 
@@ -30,10 +30,9 @@
                 <a href="#principles">اصول ما</a>
             </nav>
 
-            <div class="header-action">
-                <a href="#roles" class="button button-outline">
-                    آشنایی با نقش‌ها
-                </a>
+            <div class="header-action header-account-actions">
+                <a href="{{ route('companion-seeker.login') }}" class="button button-outline">ورود</a>
+                <a href="{{ route('register') }}" class="button button-primary">ثبت‌نام</a>
             </div>
 
             {{-- Mobile Navigation --}}
@@ -53,6 +52,9 @@
                     <a href="#roles">همراه‌جو و همراه‌یار</a>
                     <a href="#how-it-works">نحوه کار</a>
                     <a href="#principles">اصول ما</a>
+                    <a href="{{ route('companion-seeker.login') }}">ورود همراهان</a>
+                    <a href="{{ route('register') }}">ثبت‌نام</a>
+                    <a href="{{ route('admin.login') }}">ورود مدیریت</a>
                 </nav>
             </details>
 
@@ -70,39 +72,30 @@
 
                     <span class="eyebrow">
                         <span class="eyebrow-mark"></span>
-                        حمل‌ونقل رایگان، برای کمک به یکدیگر
+                        همراهی داوطلبانه؛ با هم، برای هم
                     </span>
 
                     <h1>
                         پرچم سرخ
-                        <span>سامانه حمل‌ونقل رایگان</span>
+                        <span>با پرچم سرخ به خیابان بیایید</span>
                     </h1>
 
                     <p class="hero-description">
-                        پرچم سرخ بستری بشردوستانه برای حمل‌ونقل رایگان
-                        و داوطلبانه است؛ فضایی برای افرادی که به جابه‌جایی
-                        نیاز دارند و کسانی که می‌خواهند بدون دریافت هزینه،
-                        وسیله نقلیه و وقت خود را در اختیار دیگران قرار دهند.
+                        پرچم سرخ بستری برای همراهی داوطلبانه و انسانی است؛
+                        جایی برای پیوند افرادی که به همراهی نیاز دارند
+                        با کسانی که می‌خواهند وقت و توان خود را
+                        بی‌چشم‌داشت در اختیار دیگران قرار دهند.
                     </p>
 
                     <div class="hero-actions">
-                        <span class="button button-primary button-disabled"
-                              aria-disabled="true">
-                            درخواست حمل‌ونقل
-                            <small>به‌زودی</small>
-                        </span>
-
-                        <span class="button button-light button-disabled"
-                              aria-disabled="true">
-                            اعلام آمادگی برای همراهی
-                            <small>به‌زودی</small>
-                        </span>
+                        <a href="{{ route('register') }}" class="button button-primary">پیوستن به پرچم سرخ</a>
+                        <a href="{{ route('companion-seeker.login') }}" class="button button-light">ورود به حساب</a>
                     </div>
 
                     <div class="hero-note">
                         <span class="note-symbol" aria-hidden="true">✳</span>
                         <span>
-                            حمل‌ونقل رایگان، بر پایه مشارکت داوطلبانه و احترام متقابل.
+                            همراهی با رضایت، اعتماد و احترام متقابل شکل می‌گیرد.
                         </span>
                     </div>
 
@@ -356,9 +349,9 @@
                     </h2>
 
                     <p>
-                        چه به حمل‌ونقل نیاز داشته باشید و چه بخواهید
-                        وسیله نقلیه خود را داوطلبانه در اختیار دیگران
-                        قرار دهید، می‌توانید در این همیاری مشارکت کنید.
+                        چه به همراهی نیاز داشته باشید و چه بخواهید
+                        داوطلبانه همراه دیگران باشید، می‌توانید
+                        با انتخاب نقش خود به این حرکت بپیوندید.
                     </p>
                 </div>
 
@@ -372,27 +365,23 @@
                             <span class="role-icon" aria-hidden="true">؟</span>
                         </div>
 
-                        <span class="role-label">درخواست‌کننده حمل‌ونقل</span>
+                        <span class="role-label">درخواست‌کننده همراهی</span>
 
                         <h3>همراه‌جو</h3>
 
                         <p>
-                            همراه‌جو فردی است که برای جابه‌جایی از مبدأ
+                            همراه‌جو فردی است که برای همراهی در مسیر
                             به مقصد به وسیله نقلیه نیاز دارد و درخواست
                             حمل‌ونقل رایگان خود را در سامانه مطرح می‌کند.
                         </p>
 
                         <ul class="role-points">
-                            <li>ثبت درخواست حمل‌ونقل رایگان</li>
-                            <li>مشخص کردن مبدأ، مقصد و زمان موردنیاز</li>
+                            <li>ثبت درخواست همراهی</li>
+                            <li>مشخص کردن مسیر و زمان موردنیاز</li>
                             <li>بررسی پیشنهادها و انتخاب آزادانه</li>
                         </ul>
 
-                        <span class="role-action role-action-disabled"
-                              aria-disabled="true">
-                            ثبت درخواست
-                            <small>به‌زودی</small>
-                        </span>
+                        <a href="{{ route('register') }}" class="role-action">ثبت‌نام به‌عنوان همراه‌جو</a>
 
                     </article>
 
@@ -404,7 +393,7 @@
                             <span class="role-icon" aria-hidden="true">✳</span>
                         </div>
 
-                        <span class="role-label">ارائه‌دهنده داوطلبانه حمل‌ونقل</span>
+                        <span class="role-label">همراه داوطلب</span>
 
                         <h3>همراه‌یار</h3>
 
@@ -416,16 +405,12 @@
                         </p>
 
                         <ul class="role-points">
-                            <li>اعلام آمادگی داوطلبانه برای جابه‌جایی</li>
-                            <li>بررسی درخواست‌های حمل‌ونقل</li>
+                            <li>اعلام آمادگی برای همراهی داوطلبانه</li>
+                            <li>بررسی درخواست‌های همراهی</li>
                             <li>پذیرش یا نپذیرفتن آزادانه درخواست</li>
                         </ul>
 
-                        <span class="role-action role-action-disabled"
-                              aria-disabled="true">
-                            اعلام آمادگی
-                            <small>به‌زودی</small>
-                        </span>
+                        <a href="{{ route('register') }}" class="role-action">ثبت‌نام به‌عنوان همراه‌یار</a>
 
                     </article>
 
@@ -449,7 +434,7 @@
                     <span class="section-label">فرآیند همیاری</span>
 
                     <h2>
-                        حمل‌ونقل رایگان چگونه
+                        فرآیند همراهی چگونه
                         <span>انجام می‌شود؟</span>
                     </h2>
 
@@ -512,7 +497,7 @@
                         <h3>انجام همراهی</h3>
 
                         <p>
-                            در صورت توافق، جابه‌جایی به‌صورت رایگان
+                            در صورت توافق، همراهی به‌صورت داوطلبانه
                             و داوطلبانه انجام می‌شود.
                         </p>
                     </article>
@@ -537,7 +522,7 @@
                     <span class="section-label">پایه‌های اعتماد</span>
 
                     <h2>
-                        حمل‌ونقل با
+                        همراهی با
                         <span>احترام و مسئولیت</span>
                     </h2>
 
@@ -629,7 +614,7 @@
 
                 <h2>
                     پرچم سرخ
-                    <span>سامانه حمل‌ونقل رایگان</span>
+                    <span>بستر همراهی داوطلبانه</span>
                 </h2>
 
                 <p>
@@ -639,17 +624,8 @@
                 </p>
 
                 <div class="hero-actions final-actions">
-                    <span class="button button-light button-disabled"
-                          aria-disabled="true">
-                        درخواست حمل‌ونقل
-                        <small>به‌زودی</small>
-                    </span>
-
-                    <span class="button button-ghost button-disabled"
-                          aria-disabled="true">
-                        اعلام آمادگی
-                        <small>به‌زودی</small>
-                    </span>
+                    <a href="{{ route('register') }}" class="button button-light">ثبت‌نام و پیوستن</a>
+                    <a href="{{ route('companion-seeker.login') }}" class="button button-ghost">ورود به حساب</a>
                 </div>
 
             </div>
@@ -676,7 +652,7 @@
                 </a>
 
                 <p>
-                    سامانه حمل‌ونقل رایگان و بشردوستانه؛
+                    سامانه همراهی داوطلبانه و انسانی؛
                     بستری برای همیاری داوطلبانه و کمک به یکدیگر.
                 </p>
 
@@ -690,6 +666,9 @@
                 <a href="#roles">همراه‌جو و همراه‌یار</a>
                 <a href="#how-it-works">نحوه کار</a>
                 <a href="#principles">اصول ما</a>
+                <a href="{{ route('register') }}">ثبت‌نام</a>
+                <a href="{{ route('companion-seeker.login') }}">ورود همراهان</a>
+                <a href="{{ route('admin.login') }}">ورود مدیریت</a>
             </div>
 
 
@@ -697,7 +676,7 @@
                 <h3>یک اصل ساده</h3>
 
                 <p>
-                    حمل‌ونقل رایگان است؛
+                    همراهی بدون اجبار و با رضایت است؛
                     مشارکت داوطلبانه، با رضایت و احترام متقابل.
                 </p>
             </div>
@@ -712,7 +691,7 @@
                 </span>
 
                 <span>
-                    حمل‌ونقل رایگان؛ همیاری انسانی
+                    همراهی داوطلبانه؛ همیاری انسانی
                 </span>
             </div>
         </div>
