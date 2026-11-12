@@ -16,6 +16,24 @@ use Illuminate\View\View;
 
 class AccompanimentRequestController extends Controller
 {
+    public function adminIndex(Request $request): View
+    {
+        abort_unless($request->user()->isAdmin(), 403);
+
+        $query = AccompanimentRequest::query()
+            ->with(['companionSeeker:id,name,mobile', 'acceptedOffer.helper:id,name,mobile,vehicle_model,vehicle_plate'])
+            ->latest('departure_at');
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->input('status'));
+        }
+
+        return view('admin.accompaniment-requests.index', [
+            'requests' => $query->paginate(20)->withQueryString(),
+            'status' => $request->input('status', ''),
+        ]);
+    }
+
     public function index(Request $request): View
     {
         abort_unless($request->user()->isCompanionSeeker(), 403);
@@ -155,6 +173,10 @@ class AccompanimentRequestController extends Controller
                 throw ValidationException::withMessages(['request' => 'ظرفیت ثبت‌شدهٔ خودروی شما برای این درخواست کافی نیست.']);
             }
 
+            if ($this->hasConflictingReservation($lockedHelper, $accompanimentRequest)) {
+                throw ValidationException::withMessages(['request' => 'برای این بازهٔ زمانی، اعلام آمادگی یا توافق فعال دیگری دارید.']);
+            }
+
             $existing = AccompanimentOffer::query()
                 ->where('accompaniment_request_id', $accompanimentRequest->id)
                 ->where('helper_id', $lockedHelper->id)
@@ -233,6 +255,10 @@ class AccompanimentRequestController extends Controller
                 throw ValidationException::withMessages(['offer' => 'شرایط یا ظرفیت همراه‌یار تغییر کرده است؛ امکان توافق وجود ندارد.']);
             }
 
+            if ($this->hasConflictingReservation($helper, $accompanimentRequest, $offer->id)) {
+                throw ValidationException::withMessages(['offer' => 'همراه‌یار برای این بازهٔ زمانی توافق یا رزرو فعال دیگری دارد.']);
+            }
+
             $offer->update([
                 'status' => AccompanimentOffer::STATUS_ACCEPTED,
                 'responded_at' => now(),
@@ -298,6 +324,91 @@ class AccompanimentRequestController extends Controller
         });
 
         return back()->with('status', 'درخواست همراهی لغو شد.');
+    }
+
+    public function completeRequest(Request $request, int $requestId): RedirectResponse
+    {
+        DB::transaction(function () use ($request, $requestId): void {
+            $accompanimentRequest = AccompanimentRequest::query()
+                ->with('acceptedOffer')
+                ->lockForUpdate()
+                ->findOrFail($requestId);
+
+            $acceptedOffer = $accompanimentRequest->acceptedOffer;
+            $userId = $request->user()->id;
+
+            abort_unless(
+                $accompanimentRequest->user_id === $userId
+                    || ($acceptedOffer && $acceptedOffer->helper_id === $userId),
+                403
+            );
+
+            if ($accompanimentRequest->status !== AccompanimentRequest::STATUS_AGREED || ! $acceptedOffer) {
+                throw ValidationException::withMessages(['request' => 'فقط همراهی توافق‌شده را می‌توان تکمیل کرد.']);
+            }
+
+            $completionValue = $accompanimentRequest->getRawOriginal('return_at')
+                ?: $accompanimentRequest->getRawOriginal('departure_at');
+            $completionTime = CarbonImmutable::parse($completionValue, 'Asia/Tehran');
+
+            if ($completionTime->isFuture()) {
+                throw ValidationException::withMessages(['request' => 'پس از زمان پایان برنامه‌ریزی‌شده می‌توانید همراهی را تکمیل کنید.']);
+            }
+
+            $accompanimentRequest->update([
+                'status' => AccompanimentRequest::STATUS_COMPLETED,
+            ]);
+        });
+
+        return back()->with('status', 'پایان همراهی ثبت شد.');
+    }
+
+    private function hasConflictingReservation(
+        User $helper,
+        AccompanimentRequest $candidate,
+        ?int $excludeOfferId = null
+    ): bool {
+        $candidateStart = CarbonImmutable::parse(
+            $candidate->getRawOriginal('departure_at'),
+            'Asia/Tehran'
+        );
+        $candidateEndValue = $candidate->getRawOriginal('return_at');
+        $candidateEnd = $candidateEndValue
+            ? CarbonImmutable::parse($candidateEndValue, 'Asia/Tehran')
+            : $candidateStart;
+
+        $offers = AccompanimentOffer::query()
+            ->with('accompanimentRequest')
+            ->where('helper_id', $helper->id)
+            ->whereIn('status', [
+                AccompanimentOffer::STATUS_PENDING,
+                AccompanimentOffer::STATUS_ACCEPTED,
+            ])
+            ->when($excludeOfferId, fn ($query) => $query->where('id', '!=', $excludeOfferId))
+            ->get();
+
+        foreach ($offers as $offer) {
+            $reservedRequest = $offer->accompanimentRequest;
+            if (! $reservedRequest) {
+                continue;
+            }
+
+            $reservedStart = CarbonImmutable::parse(
+                $reservedRequest->getRawOriginal('departure_at'),
+                'Asia/Tehran'
+            );
+            $reservedEndValue = $reservedRequest->getRawOriginal('return_at');
+            $reservedEnd = $reservedEndValue
+                ? CarbonImmutable::parse($reservedEndValue, 'Asia/Tehran')
+                : $reservedStart;
+
+            if ($candidateStart->lessThanOrEqualTo($reservedEnd)
+                && $reservedStart->lessThanOrEqualTo($candidateEnd)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function isRequestStillEligible(AccompanimentRequest $request): bool

@@ -25,6 +25,7 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
     Route::middleware(['auth', 'admin'])->group(function (): void {
         Route::get('/', AdminDashboardController::class)->name('dashboard');
         Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+        Route::get('/accompaniment-requests', [AccompanimentRequestController::class, 'adminIndex'])->name('accompaniment-requests.index');
         Route::post('/users/{user}/block', [AdminUserController::class, 'block'])->whereNumber('user')->name('users.block');
         Route::post('/users/{user}/unblock', [AdminUserController::class, 'unblock'])->whereNumber('user')->name('users.unblock');
         Route::get('/administrators', [AdminAdministratorController::class, 'index'])->name('administrators.index');
@@ -52,6 +53,7 @@ Route::prefix('companion')->name('companion-seeker.')->group(function (): void {
         Route::get('/requests/create', [AccompanimentRequestController::class, 'create'])->name('requests.create');
         Route::post('/requests', [AccompanimentRequestController::class, 'store'])->middleware('throttle:10,1')->name('requests.store');
         Route::post('/requests/{request}/cancel', [AccompanimentRequestController::class, 'cancelRequest'])->whereNumber('request')->name('requests.cancel');
+        Route::post('/requests/{request}/complete', [AccompanimentRequestController::class, 'completeRequest'])->whereNumber('request')->name('requests.complete');
         Route::post('/requests/{request}/offers/{offer}/accept', [AccompanimentRequestController::class, 'acceptOffer'])->whereNumber('request')->whereNumber('offer')->name('requests.offers.accept');
         Route::post('/requests/{request}/offers/{offer}/reject', [AccompanimentRequestController::class, 'rejectOffer'])->whereNumber('request')->whereNumber('offer')->name('requests.offers.reject');
 

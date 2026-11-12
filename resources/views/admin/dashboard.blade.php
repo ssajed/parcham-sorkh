@@ -188,6 +188,14 @@
                     </span>
                 </a>
 
+                <a href="{{ route('admin.accompaniment-requests.index') }}" class="admin-quick-link">
+                    <span class="admin-quick-icon admin-quick-icon-blue">↔</span>
+                    <span class="admin-quick-text">
+                        <strong>درخواست‌های همراهی</strong>
+                        <small>مشاهده وضعیت درخواست‌ها و توافق‌ها</small>
+                    </span>
+                </a>
+
                 <a href="{{ route('admin.accounts.pending') }}" class="admin-quick-link">
                     <span class="admin-quick-icon admin-quick-icon-orange">✓</span>
 

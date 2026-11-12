@@ -41,6 +41,11 @@
                                 <p class="mt-2 text-sm leading-7 text-green-900">{{ $item->description }}</p>
                             @endif
                         </div>
+                    @elseif($offer->status === 'accepted')
+                        <form method="POST" action="{{ route('companion-seeker.requests.complete', $item) }}" class="mt-4">
+                            @csrf
+                            <button class="rounded-full border border-green-700 px-5 py-2 text-sm font-bold text-green-900">ثبت پایان همراهی</button>
+                        </form>
                     @elseif($offer->status === 'pending')
                         <p class="mt-4 text-xs leading-6 text-gray-500">تا زمان پذیرش از سوی همراه‌جو، اطلاعات تماس و محل دقیق نمایش داده نمی‌شود. ظرفیت این درخواست برای شما موقتاً رزرو است.</p>
                         <form method="POST" action="{{ route('companion-seeker.helper.offers.withdraw', $offer) }}" class="mt-4">
