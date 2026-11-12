@@ -148,7 +148,7 @@
                                 </td>
 
                                 <td>
-                                    {{ $user->created_at?->format('Y/m/d') ?? '—' }}
+                                    {{ $user->created_at ? \App\Support\JalaliDate::format($user->created_at) : '—' }}
                                 </td>
 
                                 <td>
