@@ -170,6 +170,90 @@ class AccompanimentRequestTest extends TestCase
         ]);
     }
 
+    public function test_helper_cannot_reserve_overlapping_round_trip_time_slots(): void
+    {
+        $seeker = $this->makeUser(seeker: true);
+        $helper = $this->makeUser(helper: true, capacity: 3);
+        $first = $seeker->accompanimentRequests()->create([
+            'origin_city' => 'تهران',
+            'origin_location' => 'محدوده آزادی',
+            'destination_city' => 'کرج',
+            'destination_location' => 'محدوده آزادگان',
+            'type' => AccompanimentRequest::TYPE_ROUND_TRIP,
+            'departure_at' => now()->addDays(3)->setTime(9, 0),
+            'return_at' => now()->addDays(3)->setTime(13, 0),
+            'passenger_count' => 2,
+            'status' => AccompanimentRequest::STATUS_OPEN,
+        ]);
+
+        $second = $seeker->accompanimentRequests()->create([
+            'origin_city' => 'تهران',
+            'origin_location' => 'محدوده ونک',
+            'destination_city' => 'کرج',
+            'destination_location' => 'محدوده گوهردشت',
+            'type' => AccompanimentRequest::TYPE_ONE_WAY,
+            'departure_at' => now()->addDays(3)->setTime(11, 0),
+            'passenger_count' => 1,
+            'status' => AccompanimentRequest::STATUS_OPEN,
+        ]);
+
+        $this->actingAs($helper)
+            ->post(route('companion-seeker.helper.requests.offer', $first))
+            ->assertRedirect();
+
+        $this->actingAs($helper)
+            ->post(route('companion-seeker.helper.requests.offer', $second))
+            ->assertSessionHasErrors('request');
+
+        $this->assertDatabaseCount('accompaniment_offers', 1);
+    }
+
+    public function test_either_party_can_mark_an_agreed_accompaniment_completed_after_its_scheduled_end(): void
+    {
+        $seeker = $this->makeUser(seeker: true);
+        $helper = $this->makeUser(helper: true, capacity: 3);
+        $accompanimentRequest = $seeker->accompanimentRequests()->create([
+            'origin_city' => 'تهران',
+            'origin_location' => 'محدوده آزادی',
+            'destination_city' => 'کرج',
+            'destination_location' => 'محدوده آزادگان',
+            'type' => AccompanimentRequest::TYPE_ONE_WAY,
+            'departure_at' => now()->subDay(),
+            'passenger_count' => 2,
+            'status' => AccompanimentRequest::STATUS_AGREED,
+        ]);
+        AccompanimentOffer::query()->create([
+            'accompaniment_request_id' => $accompanimentRequest->id,
+            'helper_id' => $helper->id,
+            'reserved_passenger_count' => 2,
+            'status' => AccompanimentOffer::STATUS_ACCEPTED,
+        ]);
+
+        $this->actingAs($helper)
+            ->post(route('companion-seeker.requests.complete', $accompanimentRequest))
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('accompaniment_requests', [
+            'id' => $accompanimentRequest->id,
+            'status' => AccompanimentRequest::STATUS_COMPLETED,
+        ]);
+    }
+
+    public function test_administrator_can_review_accompaniment_requests(): void
+    {
+        $seeker = $this->makeUser(seeker: true);
+        $admin = User::factory()->create();
+        $admin->role = User::ROLE_ADMIN;
+        $admin->account_status = User::ACCOUNT_STATUS_APPROVED;
+        $admin->save();
+        $this->makeRequest($seeker, passengers: 1);
+
+        $this->actingAs($admin)
+            ->get(route('admin.accompaniment-requests.index'))
+            ->assertOk()
+            ->assertSee('درخواست‌های همراهی');
+    }
+
     private function makeUser(bool $seeker = false, bool $helper = false, ?int $capacity = null): User
     {
         $user = User::factory()->create();
@@ -178,6 +262,9 @@ class AccompanimentRequestTest extends TestCase
         $user->can_be_companion_seeker = $seeker;
         $user->can_be_companion_helper = $helper;
         $user->vehicle_capacity = $capacity;
+        $user->mobile = '091200000'.str_pad((string) $user->id, 2, '0', STR_PAD_LEFT);
+        $user->vehicle_model = $helper ? 'خودروی آزمایشی' : null;
+        $user->vehicle_plate = $helper ? '۱۲ الف ۳۴۵' : null;
         $user->blocked_at = null;
         $user->save();
 

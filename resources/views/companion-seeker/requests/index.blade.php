@@ -79,6 +79,10 @@
                                 <p class="mt-2 text-sm text-green-900">زمان برگشت: {{ \App\Support\JalaliDate::format($item->return_at, 'Y/m/d H:i') }}</p>
                             @endif
                         </section>
+                        <form method="POST" action="{{ route('companion-seeker.requests.complete', $item) }}" class="mt-4">
+                            @csrf
+                            <button class="rounded-full border border-green-700 px-5 py-2 text-sm font-bold text-green-900">ثبت پایان همراهی</button>
+                        </form>
                     @endif
 
                     @if($item->description && $item->status !== 'open')
