@@ -134,9 +134,16 @@ class AdminAdministratorController extends Controller
             }
 
             // Preserve the independent companion permissions on the account.
-            $administrator->role = $administrator->can_be_companion_seeker
-                ? User::ROLE_COMPANION_SEEKER
-                : User::ROLE_COMPANION_HELPER;
+            if ($administrator->can_be_companion_seeker) {
+                $administrator->role = User::ROLE_COMPANION_SEEKER;
+            } elseif ($administrator->can_be_companion_helper) {
+                $administrator->role = User::ROLE_COMPANION_HELPER;
+            } else {
+                // The initial administrator may have been created by the CLI
+                // before companion-role flags existed; restore a safe default.
+                $administrator->can_be_companion_seeker = true;
+                $administrator->role = User::ROLE_COMPANION_SEEKER;
+            }
 
             $administrator->save();
         });
