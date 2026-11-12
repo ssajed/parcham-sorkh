@@ -128,7 +128,7 @@
                                 </td>
 
                                 <td>
-                                    {{ $administrator->account_approved_at?->format('Y/m/d') ?? '—' }}
+                                    {{ $administrator->account_approved_at ? \App\Support\JalaliDate::format($administrator->account_approved_at) : '—' }}
                                 </td>
 
                                 <td>
