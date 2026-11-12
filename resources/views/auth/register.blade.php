@@ -798,6 +798,32 @@
                     ثبت‌نام به‌تنهایی به معنای تأیید یا فعال‌شدن حساب نیست.
                 </div>
 
+                {{-- پذیرش قوانین --}}
+                <section class="rounded-xl border border-gray-200 bg-slate-50 p-4">
+                    <label for="accepted_terms" class="flex cursor-pointer items-start gap-3">
+                        <input
+                            id="accepted_terms"
+                            name="accepted_terms"
+                            type="checkbox"
+                            value="1"
+                            @checked(old('accepted_terms'))
+                            required
+                            class="mt-1 h-5 w-5 shrink-0 rounded border-gray-300 text-green-800 focus:ring-green-700"
+                        >
+                        <span class="text-sm leading-7 text-gray-700">
+                            قوانین و شرایط استفاده از پرچم سرخ را
+                            <a href="{{ route('terms') }}" target="_blank" rel="noopener noreferrer"
+                               class="font-black text-green-800 underline underline-offset-4">
+                                مطالعه کرده‌ام
+                            </a>
+                            و می‌پذیرم.
+                        </span>
+                    </label>
+                    @error('accepted_terms')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </section>
+
                 {{-- ثبت‌نام --}}
                 <button
                     type="submit"
