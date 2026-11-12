@@ -508,7 +508,7 @@
 
                     {{-- ظرفیت مجاز خودرو --}}
                     <div>
-                        <label for="vehicle_capacity" class="register-label">ظرفیت مجاز سرنشین خودرو (با احتساب همراه‌یار)</label>
+                        <label for="vehicle_capacity" class="register-label">ظرفیت مجاز همراهی (۱ تا ۴ نفر)</label>
                         <select
                             id="vehicle_capacity"
                             name="vehicle_capacity"
