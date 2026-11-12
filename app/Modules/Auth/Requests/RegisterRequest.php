@@ -79,6 +79,8 @@ class RegisterRequest extends FormRequest
                 Rule::unique('users', 'mobile'),
             ],
 
+            'accepted_terms' => ['required', 'accepted'],
+
             'password' => [
                 'required',
                 'string',
@@ -146,6 +148,9 @@ class RegisterRequest extends FormRequest
             'mobile.required' => 'وارد کردن شماره موبایل الزامی است.',
             'mobile.regex' => 'شماره موبایل باید با 09 و به‌صورت ۱۱ رقمی وارد شود.',
             'mobile.unique' => 'این شماره موبایل قبلاً ثبت شده است.',
+
+            'accepted_terms.required' => 'برای ثبت‌نام باید قوانین و شرایط استفاده را بپذیرید.',
+            'accepted_terms.accepted' => 'برای ثبت‌نام باید قوانین و شرایط استفاده را تأیید کنید.',
 
             'password.required' => 'وارد کردن رمز عبور الزامی است.',
             'password.min' => 'رمز عبور باید حداقل ۸ نویسه باشد.',
