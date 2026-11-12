@@ -132,7 +132,7 @@
                                 </td>
 
                                 <td>
-                                    {{ $administrator->created_at?->format('Y/m/d') ?? '—' }}
+                                    {{ $administrator->created_at ? \App\Support\JalaliDate::format($administrator->created_at) : '—' }}
                                 </td>
                             </tr>
                         @endforeach
