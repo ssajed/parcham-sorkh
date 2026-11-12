@@ -53,7 +53,10 @@ class AccompanimentRequest extends Model
 
     public function acceptedOffer(): HasOne
     {
-        return $this->hasOne(AccompanimentOffer::class)->where('status', AccompanimentOffer::STATUS_ACCEPTED);
+        return $this->hasOne(AccompanimentOffer::class)->whereIn('status', [
+            AccompanimentOffer::STATUS_ACCEPTED,
+            AccompanimentOffer::STATUS_COMPLETED,
+        ]);
     }
 
     public function isRoundTrip(): bool

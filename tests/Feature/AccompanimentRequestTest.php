@@ -237,6 +237,10 @@ class AccompanimentRequestTest extends TestCase
             'id' => $accompanimentRequest->id,
             'status' => AccompanimentRequest::STATUS_COMPLETED,
         ]);
+        $this->assertDatabaseHas('accompaniment_offers', [
+            'accompaniment_request_id' => $accompanimentRequest->id,
+            'status' => AccompanimentOffer::STATUS_COMPLETED,
+        ]);
     }
 
     public function test_administrator_can_review_accompaniment_requests(): void

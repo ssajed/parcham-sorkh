@@ -13,6 +13,7 @@ class AccompanimentOffer extends Model
     public const STATUS_REJECTED = 'rejected';
     public const STATUS_WITHDRAWN = 'withdrawn';
     public const STATUS_EXPIRED = 'expired';
+    public const STATUS_COMPLETED = 'completed';
 
     protected $fillable = [
         'accompaniment_request_id',

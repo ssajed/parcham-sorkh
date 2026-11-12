@@ -22,7 +22,7 @@
                 <article class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
                     <div class="flex flex-wrap items-center justify-between gap-3">
                         <h2 class="font-black text-gray-900">{{ $item->origin_city }} به {{ $item->destination_city }}</h2>
-                        @php($statusLabels = ['pending' => 'در انتظار پاسخ همراه‌جو', 'accepted' => 'توافق‌شده', 'rejected' => 'پذیرفته‌نشده', 'withdrawn' => 'پس‌گرفته‌شده', 'expired' => 'منقضی‌شده'])
+                        @php($statusLabels = ['pending' => 'در انتظار پاسخ همراه‌جو', 'accepted' => 'توافق‌شده', 'rejected' => 'پذیرفته‌نشده', 'withdrawn' => 'پس‌گرفته‌شده', 'expired' => 'منقضی‌شده', 'completed' => 'تکمیل‌شده'])
                         <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-gray-700">{{ $statusLabels[$offer->status] ?? $offer->status }}</span>
                     </div>
                     <div class="mt-4 grid gap-3 sm:grid-cols-3">
@@ -31,7 +31,7 @@
                         <div><p class="text-xs text-gray-500">نوع همراهی</p><p class="mt-1 text-sm font-bold">{{ $item->isRoundTrip() ? 'رفت‌وبرگشت' : 'یک‌طرفه' }}</p></div>
                     </div>
 
-                    @if($offer->status === 'accepted')
+                    @if(in_array($offer->status, ['accepted', 'completed'], true))
                         <div class="mt-4 rounded-xl border border-green-200 bg-green-50 p-4">
                             <h3 class="font-black text-green-900">توافق نهایی شد؛ هماهنگی مستقیم</h3>
                             <p class="mt-2 text-sm text-green-900">همراه‌جو: {{ $item->companionSeeker->name }}</p>

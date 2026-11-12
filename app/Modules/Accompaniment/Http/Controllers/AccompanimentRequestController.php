@@ -209,17 +209,29 @@ class AccompanimentRequestController extends Controller
 
     public function withdrawOffer(Request $request, int $offerId): RedirectResponse
     {
-        $offer = AccompanimentOffer::query()->findOrFail($offerId);
-        abort_unless($offer->helper_id === $request->user()->id, 403);
+        DB::transaction(function () use ($request, $offerId): void {
+            $offer = AccompanimentOffer::query()->findOrFail($offerId);
+            $accompanimentRequest = AccompanimentRequest::query()
+                ->lockForUpdate()
+                ->findOrFail($offer->accompaniment_request_id);
 
-        if ($offer->status !== AccompanimentOffer::STATUS_PENDING) {
-            throw ValidationException::withMessages(['offer' => 'فقط اعلام آمادگی‌های در انتظار را می‌توان پس گرفت.']);
-        }
+            abort_unless($offer->helper_id === $request->user()->id, 403);
 
-        $offer->update([
-            'status' => AccompanimentOffer::STATUS_WITHDRAWN,
-            'responded_at' => now(),
-        ]);
+            $lockedOffer = $accompanimentRequest->offers()
+                ->whereKey($offer->id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            if ($accompanimentRequest->status !== AccompanimentRequest::STATUS_OPEN
+                || $lockedOffer->status !== AccompanimentOffer::STATUS_PENDING) {
+                throw ValidationException::withMessages(['offer' => 'فقط اعلام آمادگی‌های در انتظار یک درخواست باز را می‌توان پس گرفت.']);
+            }
+
+            $lockedOffer->update([
+                'status' => AccompanimentOffer::STATUS_WITHDRAWN,
+                'responded_at' => now(),
+            ]);
+        });
 
         return back()->with('status', 'اعلام آمادگی شما پس گرفته شد و ظرفیت رزروشده آزاد شد.');
     }
@@ -282,18 +294,28 @@ class AccompanimentRequestController extends Controller
 
     public function rejectOffer(Request $request, int $requestId, int $offerId): RedirectResponse
     {
-        $accompanimentRequest = AccompanimentRequest::query()->findOrFail($requestId);
-        abort_unless($accompanimentRequest->user_id === $request->user()->id, 403);
+        DB::transaction(function () use ($request, $requestId, $offerId): void {
+            $accompanimentRequest = AccompanimentRequest::query()
+                ->lockForUpdate()
+                ->findOrFail($requestId);
 
-        $offer = $accompanimentRequest->offers()
-            ->whereKey($offerId)
-            ->where('status', AccompanimentOffer::STATUS_PENDING)
-            ->firstOrFail();
+            abort_unless($accompanimentRequest->user_id === $request->user()->id, 403);
 
-        $offer->update([
-            'status' => AccompanimentOffer::STATUS_REJECTED,
-            'responded_at' => now(),
-        ]);
+            if ($accompanimentRequest->status !== AccompanimentRequest::STATUS_OPEN) {
+                throw ValidationException::withMessages(['offer' => 'این درخواست دیگر برای بررسی اعلام آمادگی باز نیست.']);
+            }
+
+            $offer = $accompanimentRequest->offers()
+                ->whereKey($offerId)
+                ->where('status', AccompanimentOffer::STATUS_PENDING)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            $offer->update([
+                'status' => AccompanimentOffer::STATUS_REJECTED,
+                'responded_at' => now(),
+            ]);
+        });
 
         return back()->with('status', 'اعلام آمادگی موردنظر رد شد.');
     }
@@ -357,6 +379,10 @@ class AccompanimentRequestController extends Controller
 
             $accompanimentRequest->update([
                 'status' => AccompanimentRequest::STATUS_COMPLETED,
+            ]);
+            $acceptedOffer->update([
+                'status' => AccompanimentOffer::STATUS_COMPLETED,
+                'responded_at' => now(),
             ]);
         });
 
