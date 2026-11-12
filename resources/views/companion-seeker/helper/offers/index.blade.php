@@ -33,7 +33,7 @@
 
                     @if(in_array($offer->status, ['accepted', 'completed'], true))
                         <div class="mt-4 rounded-xl border border-green-200 bg-green-50 p-4">
-                            <h3 class="font-black text-green-900">توافق نهایی شد؛ هماهنگی مستقیم</h3>
+                            <h3 class="font-black text-green-900">{{ $offer->status === 'completed' ? 'همراهی تکمیل‌شده' : 'توافق نهایی شد؛ هماهنگی مستقیم' }}</h3>
                             <p class="mt-2 text-sm text-green-900">همراه‌جو: {{ $item->companionSeeker->name }}</p>
                             <p class="mt-1 text-sm text-green-900" dir="ltr">{{ $item->companionSeeker->mobile }}</p>
                             <p class="mt-2 text-xs leading-6 text-green-800">مبدأ: {{ $item->origin_location }} — مقصد: {{ $item->destination_location }}</p>
@@ -41,11 +41,12 @@
                                 <p class="mt-2 text-sm leading-7 text-green-900">{{ $item->description }}</p>
                             @endif
                         </div>
-                    @elseif($offer->status === 'accepted')
-                        <form method="POST" action="{{ route('companion-seeker.requests.complete', $item) }}" class="mt-4">
-                            @csrf
-                            <button class="rounded-full border border-green-700 px-5 py-2 text-sm font-bold text-green-900">ثبت پایان همراهی</button>
-                        </form>
+                        @if($offer->status === 'accepted')
+                            <form method="POST" action="{{ route('companion-seeker.requests.complete', $item) }}" class="mt-4">
+                                @csrf
+                                <button class="rounded-full border border-green-700 px-5 py-2 text-sm font-bold text-green-900">ثبت پایان همراهی</button>
+                            </form>
+                        @endif
                     @elseif($offer->status === 'pending')
                         <p class="mt-4 text-xs leading-6 text-gray-500">تا زمان پذیرش از سوی همراه‌جو، اطلاعات تماس و محل دقیق نمایش داده نمی‌شود. ظرفیت این درخواست برای شما موقتاً رزرو است.</p>
                         <form method="POST" action="{{ route('companion-seeker.helper.offers.withdraw', $offer) }}" class="mt-4">
