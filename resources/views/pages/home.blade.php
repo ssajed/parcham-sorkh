@@ -88,8 +88,8 @@
                     </p>
 
                     <div class="hero-actions">
-                        <a href="{{ route('register') }}" class="button button-primary">پیوستن به پرچم سرخ</a>
-                        <a href="{{ route('companion-seeker.login') }}" class="button button-light">ورود به حساب</a>
+                        <a href="{{ route('companion-seeker.requests.create') }}" class="button button-primary">ثبت درخواست همراهی</a>
+                        <a href="{{ route('register') }}" class="button button-light">ثبت‌نام در پرچم سرخ</a>
                     </div>
 
                     <div class="hero-note">
@@ -378,7 +378,7 @@
                             <li>بررسی پیشنهادها و انتخاب آزادانه</li>
                         </ul>
 
-                        <a href="{{ route('register') }}" class="role-action">ثبت‌نام به‌عنوان همراه‌جو</a>
+                        <a href="{{ route('companion-seeker.requests.create') }}" class="role-action">ثبت درخواست همراهی</a>
 
                     </article>
 
