@@ -7,6 +7,8 @@ use App\Modules\Admin\Http\Controllers\AdminUserController;
 use App\Modules\Auth\Http\Controllers\AdminLoginController;
 use App\Modules\Auth\Http\Controllers\CompanionSeekerLoginController;
 use App\Modules\Auth\Http\Controllers\RegisterController;
+use App\Modules\Accounts\Http\Controllers\CompanionProfileController;
+use App\Modules\Accompaniment\Http\Controllers\AccompanimentRequestController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'pages.home')->name('home');
