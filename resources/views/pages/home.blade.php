@@ -32,7 +32,7 @@
 
             <div class="header-action header-account-actions">
                 @auth
-                    <span class="header-user-name">{{ auth()->user()->name }}</span>
+                    <a href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : (auth()->user()->can_be_companion_seeker ? route('companion-seeker.profile.seeker') : (auth()->user()->can_be_companion_helper ? route('companion-seeker.profile.helper') : route('companion-seeker.dashboard'))) }}" class="header-user-name" aria-label="مشاهده پروفایل {{ auth()->user()->name }}">{{ auth()->user()->name }}</a>
 
                     <form action="{{ auth()->user()->isAdmin() ? route('admin.logout') : route('companion-seeker.logout') }}" method="POST">
                         @csrf
@@ -62,7 +62,7 @@
                     <a href="#how-it-works">نحوه کار</a>
                     <a href="#principles">اصول ما</a>
                     @auth
-                        <span class="mobile-user-name">{{ auth()->user()->name }}</span>
+                        <a href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : (auth()->user()->can_be_companion_seeker ? route('companion-seeker.profile.seeker') : (auth()->user()->can_be_companion_helper ? route('companion-seeker.profile.helper') : route('companion-seeker.dashboard'))) }}" class="mobile-user-name" aria-label="مشاهده پروفایل {{ auth()->user()->name }}">{{ auth()->user()->name }}</a>
                         <form action="{{ auth()->user()->isAdmin() ? route('admin.logout') : route('companion-seeker.logout') }}" method="POST">
                             @csrf
                             <button type="submit">خروج</button>
