@@ -6,7 +6,7 @@
             <div class="admin-eyebrow">مدیریت کاربران</div>
             <h1 class="admin-page-title">همه کاربران</h1>
             <p class="admin-page-description">
-                فهرست حساب‌های ثبت‌شده در سامانه پرچم سرخ
+                فهرست حساب‌های ثبت‌شده و مدیریت دسترسی آن‌ها در سامانه پرچم سرخ
             </p>
         </div>
 
@@ -38,30 +38,15 @@
                 <label for="role">نقش کاربر</label>
                 <select id="role" name="role" class="admin-form-control">
                     <option value="">همه نقش‌ها</option>
-                    <option value="companion_seeker"
-                        @selected($role === 'companion_seeker')>
-                        همراه‌جو
-                    </option>
-                    <option value="companion_helper"
-                        @selected($role === 'companion_helper')>
-                        همراه‌یار
-                    </option>
-                    <option value="admin"
-                        @selected($role === 'admin')>
-                        مدیر سامانه
-                    </option>
+                    <option value="companion_seeker" @selected($role === 'companion_seeker')>همراه‌جو</option>
+                    <option value="companion_helper" @selected($role === 'companion_helper')>همراه‌یار</option>
+                    <option value="admin" @selected($role === 'admin')>مدیر سامانه</option>
                 </select>
             </div>
 
             <div class="admin-filter-actions">
-                <button type="submit" class="admin-button admin-button-primary">
-                    جست‌وجو
-                </button>
-
-                <a href="{{ route('admin.users.index') }}"
-                   class="admin-button admin-button-secondary">
-                    پاک کردن
-                </a>
+                <button type="submit" class="admin-button admin-button-primary">جست‌وجو</button>
+                <a href="{{ route('admin.users.index') }}" class="admin-button admin-button-secondary">پاک کردن</a>
             </div>
         </form>
     </section>
@@ -82,9 +67,7 @@
             <div class="admin-empty-state">
                 <div class="admin-empty-state-icon">⌕</div>
                 <h3>کاربری پیدا نشد</h3>
-                <p>
-                    با عبارت جست‌وجو یا فیلتر انتخاب‌شده، کاربری وجود ندارد.
-                </p>
+                <p>با عبارت جست‌وجو یا فیلتر انتخاب‌شده، کاربری وجود ندارد.</p>
             </div>
         @else
             <div class="admin-table-wrapper">
@@ -96,6 +79,7 @@
                             <th>نقش</th>
                             <th>وضعیت حساب</th>
                             <th>تاریخ ثبت‌نام</th>
+                            <th>مدیریت دسترسی</th>
                         </tr>
                     </thead>
 
@@ -104,73 +88,85 @@
                             <tr>
                                 <td>
                                     <div class="admin-user-cell">
-                                        <div class="admin-user-cell-avatar">
-                                            {{ mb_substr($user->name ?: 'ک', 0, 1) }}
-                                        </div>
-
+                                        <div class="admin-user-cell-avatar">{{ mb_substr($user->name ?: 'ک', 0, 1) }}</div>
                                         <div class="admin-user-cell-info">
-                                            <strong>
-                                                {{ $user->name ?: 'بدون نام' }}
-                                            </strong>
-                                            <small>
-                                                شناسه: {{ $user->id }}
-                                            </small>
+                                            <strong>{{ $user->name ?: 'بدون نام' }}</strong>
+                                            <small>شناسه: {{ $user->id }}</small>
                                         </div>
                                     </div>
                                 </td>
 
-                                <td>
-                                    {{ $user->mobile ?: '—' }}
-                                </td>
+                                <td>{{ $user->mobile ?: '—' }}</td>
 
                                 <td>
                                     @switch($user->role)
-                                        @case('companion_seeker')
-                                            همراه‌جو
-                                            @break
-
-                                        @case('companion_helper')
-                                            همراه‌یار
-                                            @break
-
-                                        @case('admin')
-                                            مدیر سامانه
-                                            @break
-
-                                        @default
-                                            نامشخص
+                                        @case('companion_seeker') همراه‌جو @break
+                                        @case('companion_helper') همراه‌یار @break
+                                        @case('admin') مدیر سامانه @break
+                                        @default نامشخص
                                     @endswitch
                                 </td>
 
                                 <td>
-                                    @switch($user->account_status)
-                                        @case('approved')
-                                            <span class="admin-status admin-status-approved">
-                                                تأییدشده
-                                            </span>
-                                            @break
-
-                                        @case('pending')
-                                            <span class="admin-status admin-status-pending">
-                                                در انتظار بررسی
-                                            </span>
-                                            @break
-
-                                        @case('rejected')
-                                            <span class="admin-status admin-status-rejected">
-                                                ردشده
-                                            </span>
-                                            @break
-
-                                        @default
-                                            <span class="admin-status">
-                                                نامشخص
-                                            </span>
-                                    @endswitch
+                                    @if ($user->blocked_at)
+                                        <span class="admin-status admin-status-rejected">مسدودشده</span>
+                                        @if ($user->blocked_reason)
+                                            <small class="mt-2 block max-w-xs whitespace-pre-line text-gray-500">{{ $user->blocked_reason }}</small>
+                                        @endif
+                                    @else
+                                        @switch($user->account_status)
+                                            @case('approved')
+                                                <span class="admin-status admin-status-approved">تأییدشده</span>
+                                                @break
+                                            @case('pending')
+                                                <span class="admin-status admin-status-pending">در انتظار بررسی</span>
+                                                @break
+                                            @case('rejected')
+                                                <span class="admin-status admin-status-rejected">ردشده</span>
+                                                @break
+                                            @default
+                                                <span class="admin-status">نامشخص</span>
+                                        @endswitch
+                                    @endif
                                 </td>
 
+                                <td>{{ $user->created_at ? \App\Support\JalaliDate::format($user->created_at) : '—' }}</td>
+
                                 <td>
-                                    {{ $user->created_at ? \App\Support\JalaliDate::format($user->created_at) : '—' }}
+                                    @if ($user->role === 'admin')
+                                        <span class="text-xs text-gray-500">حساب مدیر قابل مسدودسازی نیست</span>
+                                    @elseif ($user->blocked_at)
+                                        <form method="POST" action="{{ route('admin.users.unblock', $user->id) }}">
+                                            @csrf
+                                            <button type="submit" class="admin-button admin-button-primary">
+                                                رفع مسدودیت
+                                            </button>
+                                        </form>
+                                    @else
+                                        <details class="min-w-48">
+                                            <summary class="admin-button admin-button-secondary cursor-pointer">
+                                                مسدودسازی حساب
+                                            </summary>
+                                            <form method="POST" action="{{ route('admin.users.block', $user->id) }}" class="mt-3 space-y-3">
+                                                @csrf
+                                                <label for="blocked_reason_{{ $user->id }}" class="block text-xs font-bold text-gray-700">
+                                                    دلیل مسدودسازی
+                                                </label>
+                                                <textarea
+                                                    id="blocked_reason_{{ $user->id }}"
+                                                    name="blocked_reason"
+                                                    rows="3"
+                                                    required
+                                                    maxlength="2000"
+                                                    class="admin-form-control w-full"
+                                                    placeholder="دلیل نقض قوانین را بنویسید..."
+                                                ></textarea>
+                                                <button type="submit" class="admin-button admin-button-primary">
+                                                    تأیید مسدودسازی
+                                                </button>
+                                            </form>
+                                        </details>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -196,13 +192,9 @@
                         min($users->lastPage(), $users->currentPage() + 2)
                     ) as $page => $url)
                         @if ($page === $users->currentPage())
-                            <span class="active" aria-current="page">
-                                {{ number_format($page) }}
-                            </span>
+                            <span class="active" aria-current="page">{{ number_format($page) }}</span>
                         @else
-                            <a href="{{ $url }}">
-                                {{ number_format($page) }}
-                            </a>
+                            <a href="{{ $url }}">{{ number_format($page) }}</a>
                         @endif
                     @endforeach
 

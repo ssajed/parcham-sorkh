@@ -35,6 +35,14 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
         Route::get('/users', [AdminUserController::class, 'index'])
             ->name('users.index');
 
+        Route::post('/users/{user}/block', [AdminUserController::class, 'block'])
+            ->whereNumber('user')
+            ->name('users.block');
+
+        Route::post('/users/{user}/unblock', [AdminUserController::class, 'unblock'])
+            ->whereNumber('user')
+            ->name('users.unblock');
+
         Route::get('/administrators', [AdminAdministratorController::class, 'index'])
             ->name('administrators.index');
 
@@ -63,8 +71,6 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
 
 // Shared sign-in for companion seekers and companion helpers.
 Route::prefix('companion')->name('companion-seeker.')->group(function (): void {
-    // Keep the login form accessible even if an old authenticated session exists.
-    // Only the credential submission endpoint is restricted to guests.
     Route::get('/login', [CompanionSeekerLoginController::class, 'create'])
         ->name('login');
 
@@ -72,9 +78,14 @@ Route::prefix('companion')->name('companion-seeker.')->group(function (): void {
         ->middleware(['guest', 'throttle:5,1'])
         ->name('login.store');
 
+    // Blocked accounts must retain a working logout route.
     Route::post('/logout', [CompanionSeekerLoginController::class, 'destroy'])
-        ->middleware(['auth', 'companion-access'])
+        ->middleware('auth')
         ->name('logout');
+
+    Route::get('/account-blocked', function () {
+        return view('companion-seeker.account-blocked');
+    })->middleware('auth')->name('account-blocked');
 
     Route::middleware(['auth', 'companion-access'])->group(function (): void {
         Route::view('/dashboard', 'companion-seeker.dashboard')

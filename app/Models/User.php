@@ -46,6 +46,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'mobile_verified_at' => 'datetime',
             'account_approved_at' => 'datetime',
+            'blocked_at' => 'datetime',
             'vehicle_capacity' => 'integer',
             'terms_accepted_at' => 'datetime',
             'password' => 'hashed',
@@ -93,15 +94,22 @@ class User extends Authenticatable
         return $this->account_status === self::ACCOUNT_STATUS_REJECTED;
     }
 
+    public function isBlocked(): bool
+    {
+        return $this->blocked_at !== null;
+    }
+
     public function isCompanionSeeker(): bool
     {
         return $this->isAccountApproved()
+            && ! $this->isBlocked()
             && (bool) $this->can_be_companion_seeker;
     }
 
     public function isCompanionHelper(): bool
     {
         return $this->isAccountApproved()
+            && ! $this->isBlocked()
             && (bool) $this->can_be_companion_helper;
     }
 

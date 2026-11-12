@@ -54,7 +54,7 @@ class CompanionSeekerLoginController extends Controller
             ]);
         }
 
-        // Check credentials and access before creating an authenticated session.
+        // Check credentials before creating an authenticated session.
         $user = User::query()
             ->where('mobile', $validated['mobile'])
             ->first();
@@ -73,6 +73,15 @@ class CompanionSeekerLoginController extends Controller
             throw ValidationException::withMessages([
                 'mobile' => 'برای ورود مدیر سامانه از صفحه ورود مدیریت استفاده کنید.',
             ]);
+        }
+
+        // A blocked user can authenticate, but is sent only to the suspension notice.
+        if ($user->isBlocked()) {
+            RateLimiter::clear($throttleKey);
+            Auth::login($user);
+            $request->session()->regenerate();
+
+            return redirect()->route('companion-seeker.account-blocked');
         }
 
         if ($user->isAccountPending()) {

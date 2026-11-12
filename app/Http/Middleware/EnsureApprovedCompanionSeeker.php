@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 class EnsureApprovedCompanionSeeker
 {
     /**
-     * Allow approved accounts with at least one companion access.
+     * Allow approved, unblocked accounts with at least one companion access.
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -24,8 +24,12 @@ class EnsureApprovedCompanionSeeker
             abort(403, 'دسترسی به این بخش مجاز نیست.');
         }
 
+        if ($user->isBlocked()) {
+            return redirect()->route('companion-seeker.account-blocked');
+        }
+
         if (! $user->isAccountApproved()) {
-            abort(403, 'حساب کاربری شما هنوز تأیید نشده یا دسترسی آن غیرفعال است.');
+            abort(403, 'حساب کاربری شما هنوز تأیید نشده است.');
         }
 
         if (! $user->can_be_companion_seeker && ! $user->can_be_companion_helper) {
