@@ -66,6 +66,8 @@ class AdminUserSuspensionTest extends TestCase
             ])
             ->assertRedirect();
 
+        auth()->logout();
+
         $this->post(route('companion-seeker.login.store'), [
             'mobile' => '09123456789',
             'password' => 'SecurePass123',
