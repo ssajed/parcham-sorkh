@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -6,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta name="theme-color" content="#123d32">
-    <meta name="description" content="پنل مدیریت پرچم سرخ">
+    <meta name="description" content="پنل مدیریت سامانه پرچم سرخ">
 
     <title>
         @hasSection('title')
@@ -26,14 +25,22 @@
     <div class="admin-shell">
 
         {{-- Mobile sidebar overlay --}}
-        <div class="admin-sidebar-overlay" data-sidebar-overlay></div>
+        <div
+            class="admin-sidebar-overlay"
+            data-sidebar-overlay
+        ></div>
 
         {{-- Sidebar --}}
-        <aside class="admin-sidebar" id="admin-sidebar">
+        <aside
+            class="admin-sidebar"
+            id="admin-sidebar"
+            aria-label="منوی اصلی مدیریت"
+        >
 
             <div class="admin-sidebar-header">
 
                 <a href="{{ url('/admin') }}" class="admin-brand">
+
                     <span class="admin-brand-mark" aria-hidden="true">
                         پ
                     </span>
@@ -42,6 +49,7 @@
                         <strong>پرچم سرخ</strong>
                         <small>سامانه مدیریت</small>
                     </span>
+
                 </a>
 
                 <button
@@ -58,97 +66,118 @@
             <div class="admin-sidebar-content">
 
                 <div class="admin-sidebar-caption">
-                    منوی اصلی
+                    میز کار
                 </div>
 
-                <nav class="admin-navigation" aria-label="منوی مدیریت">
+                <nav
+                    class="admin-navigation"
+                    aria-label="منوی مدیریت"
+                >
 
+                    {{-- Dashboard --}}
                     <a
                         href="{{ url('/admin') }}"
                         class="admin-nav-link {{ request()->is('admin') ? 'is-active' : '' }}"
+                        @if(request()->is('admin')) aria-current="page" @endif
                     >
-                        <span class="admin-nav-icon" aria-hidden="true">⌂</span>
+                        <span class="admin-nav-icon" aria-hidden="true">
+                            ◫
+                        </span>
                         <span>داشبورد</span>
                     </a>
 
                     <div class="admin-sidebar-caption">
-                        مدیریت محتوا
+                        مدیریت کاربران
                     </div>
 
+                    {{-- Users --}}
                     <a
-                        href="{{ url('/admin/pages') }}"
-                        class="admin-nav-link {{ request()->is('admin/pages*') ? 'is-active' : '' }}"
+                        href="{{ url('/admin/users') }}"
+                        class="admin-nav-link {{ request()->is('admin/users') || request()->is('admin/users/*') ? 'is-active' : '' }}"
+                        @if(request()->is('admin/users') || request()->is('admin/users/*')) aria-current="page" @endif
                     >
-                        <span class="admin-nav-icon" aria-hidden="true">▤</span>
-                        <span>صفحات</span>
+                        <span class="admin-nav-icon" aria-hidden="true">
+                            ♙
+                        </span>
+                        <span>همه کاربران</span>
                     </a>
 
+                    {{-- Pending accounts --}}
                     <a
-                        href="{{ url('/admin/posts') }}"
-                        class="admin-nav-link {{ request()->is('admin/posts*') ? 'is-active' : '' }}"
+                        href="{{ url('/admin/accounts/pending') }}"
+                        class="admin-nav-link {{ request()->is('admin/accounts/pending*') ? 'is-active' : '' }}"
+                        @if(request()->is('admin/accounts/pending*')) aria-current="page" @endif
                     >
-                        <span class="admin-nav-icon" aria-hidden="true">▧</span>
-                        <span>اخبار و مطالب</span>
+                        <span class="admin-nav-icon" aria-hidden="true">
+                            ◷
+                        </span>
+                        <span>بررسی و تأیید حساب‌ها</span>
                     </a>
 
+                    {{-- Companion seekers --}}
                     <a
-                        href="{{ url('/admin/categories') }}"
-                        class="admin-nav-link {{ request()->is('admin/categories*') ? 'is-active' : '' }}"
+                        href="{{ url('/admin/users?role=companion_seeker') }}"
+                        class="admin-nav-link {{ request()->fullUrlIs(url('/admin/users') . '?role=companion_seeker') ? 'is-active' : '' }}"
                     >
-                        <span class="admin-nav-icon" aria-hidden="true">▦</span>
-                        <span>دسته‌بندی‌ها</span>
+                        <span class="admin-nav-icon" aria-hidden="true">
+                            ◉
+                        </span>
+                        <span>همراه‌جویان</span>
                     </a>
 
+                    {{-- Companion helpers --}}
                     <a
-                        href="{{ url('/admin/media') }}"
-                        class="admin-nav-link {{ request()->is('admin/media*') ? 'is-active' : '' }}"
+                        href="{{ url('/admin/users?role=companion_helper') }}"
+                        class="admin-nav-link {{ request()->fullUrlIs(url('/admin/users') . '?role=companion_helper') ? 'is-active' : '' }}"
                     >
-                        <span class="admin-nav-icon" aria-hidden="true">▣</span>
-                        <span>رسانه‌ها</span>
+                        <span class="admin-nav-icon" aria-hidden="true">
+                            ◈
+                        </span>
+                        <span>همراه‌یاران</span>
                     </a>
 
                     <div class="admin-sidebar-caption">
-                        مدیریت سامانه
+                        مدیریت دسترسی‌ها
                     </div>
 
+                    {{-- Administrators --}}
                     <a
                         href="{{ url('/admin/administrators') }}"
                         class="admin-nav-link {{ request()->is('admin/administrators*') ? 'is-active' : '' }}"
+                        @if(request()->is('admin/administrators*')) aria-current="page" @endif
                     >
-                        <span class="admin-nav-icon" aria-hidden="true">♙</span>
-                        <span>مدیران</span>
+                        <span class="admin-nav-icon" aria-hidden="true">
+                            ♟
+                        </span>
+                        <span>مدیران سامانه</span>
                     </a>
 
+                    {{-- Roles --}}
                     <a
                         href="{{ url('/admin/roles') }}"
                         class="admin-nav-link {{ request()->is('admin/roles*') ? 'is-active' : '' }}"
+                        @if(request()->is('admin/roles*')) aria-current="page" @endif
                     >
-                        <span class="admin-nav-icon" aria-hidden="true">⚙</span>
+                        <span class="admin-nav-icon" aria-hidden="true">
+                            ⚙
+                        </span>
                         <span>نقش‌ها و دسترسی‌ها</span>
-                    </a>
-
-                    <a
-                        href="{{ url('/admin/settings') }}"
-                        class="admin-nav-link {{ request()->is('admin/settings*') ? 'is-active' : '' }}"
-                    >
-                        <span class="admin-nav-icon" aria-hidden="true">⚙</span>
-                        <span>تنظیمات عمومی</span>
                     </a>
 
                 </nav>
 
             </div>
 
+            {{-- Sidebar footer --}}
             <div class="admin-sidebar-footer">
 
                 <div class="admin-sidebar-footer-mark">
                     <span class="admin-status-dot"></span>
-                    محیط نمایشی پنل
+                    سامانه پرچم سرخ
                 </div>
 
                 <small>
-                    پرچم سرخ
-                    <span dir="ltr">v1.0</span>
+                    نسخه ۱.۰
                 </small>
 
             </div>
@@ -177,31 +206,44 @@
                     </button>
 
                     <div class="admin-breadcrumb">
+
                         <span>پنل مدیریت</span>
 
                         @hasSection('breadcrumb')
-                            <span class="admin-breadcrumb-separator">/</span>
-                            <strong>@yield('breadcrumb')</strong>
+                            <span class="admin-breadcrumb-separator">
+                                /
+                            </span>
+
+                            <strong>
+                                @yield('breadcrumb')
+                            </strong>
                         @endif
+
                     </div>
 
                 </div>
 
                 <div class="admin-topbar-end">
 
-                    <div class="admin-topbar-date" data-tehran-date>
-                        پنل مدیریت پرچم سرخ
+                    <div
+                        class="admin-topbar-date"
+                        data-tehran-date
+                    >
+                        سامانه مدیریت پرچم سرخ
                     </div>
 
                     <div class="admin-user">
 
-                        <div class="admin-user-avatar" aria-hidden="true">
-                            م
+                        <div
+                            class="admin-user-avatar"
+                            aria-hidden="true"
+                        >
+                            پ
                         </div>
 
                         <div class="admin-user-info">
-                            <strong>مدیر سامانه</strong>
-                            <small>مدیر کل</small>
+                            <strong>بخش مدیریت</strong>
+                            <small>سامانه پرچم سرخ</small>
                         </div>
 
                     </div>
@@ -211,17 +253,41 @@
             </header>
 
             {{-- Page content --}}
-            <main class="admin-content" id="admin-main-content">
+            <main
+                class="admin-content"
+                id="admin-main-content"
+            >
 
                 @if (session('success'))
-                    <div class="admin-alert admin-alert-success" role="status">
+                    <div
+                        class="admin-alert admin-alert-success"
+                        role="status"
+                    >
                         {{ session('success') }}
                     </div>
                 @endif
 
                 @if (session('error'))
-                    <div class="admin-alert admin-alert-error" role="alert">
+                    <div
+                        class="admin-alert admin-alert-error"
+                        role="alert"
+                    >
                         {{ session('error') }}
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div
+                        class="admin-alert admin-alert-error"
+                        role="alert"
+                    >
+                        <strong>لطفاً موارد زیر را بررسی کنید:</strong>
+
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
 
@@ -231,6 +297,7 @@
 
             {{-- Footer --}}
             <footer class="admin-footer">
+
                 <span>
                     سامانه مدیریت پرچم سرخ
                 </span>
@@ -238,6 +305,7 @@
                 <span>
                     تمامی حقوق محفوظ است.
                 </span>
+
             </footer>
 
         </div>

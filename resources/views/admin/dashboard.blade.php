@@ -7,29 +7,18 @@
 
 @section('content')
 
-    {{-- Page heading --}}
     <section class="admin-page-heading">
         <div>
             <span class="admin-eyebrow">مدیریت پرچم سرخ</span>
 
-            <h1 class="admin-page-title">
-                داشبورد مدیریت
-            </h1>
+            <h1 class="admin-page-title">داشبورد مدیریت</h1>
 
             <p class="admin-page-description">
-                نمای کلی بخش‌های مدیریتی و محتوایی سامانه
+                نمای کلی کاربران و وضعیت فعالیت سامانه
             </p>
-        </div>
-
-        <div class="admin-page-heading-actions">
-            <span class="admin-demo-label">
-                <span class="admin-status-dot"></span>
-                محیط نمایشی
-            </span>
         </div>
     </section>
 
-    {{-- Welcome panel --}}
     <section class="admin-welcome-panel">
         <div class="admin-welcome-content">
             <span class="admin-welcome-label">
@@ -39,8 +28,8 @@
             <h2>به فضای مدیریت خوش آمدید</h2>
 
             <p>
-                از این بخش می‌توانید نمای کلی صفحات، مطالب،
-                دسته‌بندی‌ها و رسانه‌های عمومی سامانه را مشاهده کنید.
+                از این بخش می‌توانید کاربران، حساب‌های همراه‌جویان و
+                همراه‌یاران و درخواست‌های بررسی حساب را مدیریت کنید.
             </p>
         </div>
 
@@ -49,12 +38,11 @@
         </div>
     </section>
 
-    {{-- Statistics --}}
     <section class="admin-section">
         <div class="admin-section-heading">
             <div>
-                <h2>نمای کلی سامانه</h2>
-                <p>تمام اعداد این بخش نمونه و غیرواقعی هستند.</p>
+                <h2>آمار کاربران</h2>
+                <p>آمار واقعی پس از اتصال داشبورد به پایگاه داده نمایش داده می‌شود.</p>
             </div>
         </div>
 
@@ -62,252 +50,173 @@
 
             <article class="admin-stat-card">
                 <div class="admin-stat-top">
-                    <span class="admin-stat-icon admin-stat-icon-green">
-                        ▤
-                    </span>
-                    <span class="admin-stat-caption">محتوای سایت</span>
+                    <span class="admin-stat-icon admin-stat-icon-green">♙</span>
+                    <span class="admin-stat-caption">کل کاربران</span>
                 </div>
 
-                <div class="admin-stat-value">۱۲</div>
+                <div class="admin-stat-value">
+                    {{ isset($stats['total_users']) ? number_format($stats['total_users']) : '—' }}
+                </div>
 
                 <div class="admin-stat-bottom">
-                    <span class="admin-stat-name">صفحات نمونه</span>
-                    <span class="admin-stat-indicator">نمایشی</span>
+                    <span class="admin-stat-name">تمام حساب‌های سامانه</span>
+                    <span class="admin-stat-indicator">آمار کاربران</span>
                 </div>
             </article>
 
             <article class="admin-stat-card">
                 <div class="admin-stat-top">
-                    <span class="admin-stat-icon admin-stat-icon-blue">
-                        ▧
-                    </span>
-                    <span class="admin-stat-caption">مطالب</span>
+                    <span class="admin-stat-icon admin-stat-icon-blue">♧</span>
+                    <span class="admin-stat-caption">همراه‌جویان</span>
                 </div>
 
-                <div class="admin-stat-value">۲۸</div>
+                <div class="admin-stat-value">
+                    {{ isset($stats['companion_seekers']) ? number_format($stats['companion_seekers']) : '—' }}
+                </div>
 
                 <div class="admin-stat-bottom">
-                    <span class="admin-stat-name">اخبار و مطالب</span>
-                    <span class="admin-stat-indicator">نمایشی</span>
+                    <span class="admin-stat-name">متقاضیان همراهی</span>
+                    <span class="admin-stat-indicator">آمار کاربران</span>
                 </div>
             </article>
 
             <article class="admin-stat-card">
                 <div class="admin-stat-top">
-                    <span class="admin-stat-icon admin-stat-icon-orange">
-                        ▦
-                    </span>
-                    <span class="admin-stat-caption">ساختار محتوا</span>
+                    <span class="admin-stat-icon admin-stat-icon-orange">♧</span>
+                    <span class="admin-stat-caption">همراه‌یاران</span>
                 </div>
 
-                <div class="admin-stat-value">۸</div>
+                <div class="admin-stat-value">
+                    {{ isset($stats['companion_helpers']) ? number_format($stats['companion_helpers']) : '—' }}
+                </div>
 
                 <div class="admin-stat-bottom">
-                    <span class="admin-stat-name">دسته‌بندی‌ها</span>
-                    <span class="admin-stat-indicator">نمایشی</span>
+                    <span class="admin-stat-name">ارائه‌دهندگان همراهی</span>
+                    <span class="admin-stat-indicator">آمار کاربران</span>
                 </div>
             </article>
 
             <article class="admin-stat-card">
                 <div class="admin-stat-top">
-                    <span class="admin-stat-icon admin-stat-icon-red">
-                        ▣
-                    </span>
-                    <span class="admin-stat-caption">فایل‌های عمومی</span>
+                    <span class="admin-stat-icon admin-stat-icon-red">◷</span>
+                    <span class="admin-stat-caption">در انتظار بررسی</span>
                 </div>
 
-                <div class="admin-stat-value">۴۶</div>
+                <div class="admin-stat-value">
+                    {{ isset($stats['pending_accounts']) ? number_format($stats['pending_accounts']) : '—' }}
+                </div>
 
                 <div class="admin-stat-bottom">
-                    <span class="admin-stat-name">رسانه‌های نمونه</span>
-                    <span class="admin-stat-indicator">نمایشی</span>
+                    <span class="admin-stat-name">حساب‌های تأییدنشده</span>
+                    <span class="admin-stat-indicator">نیازمند بررسی</span>
                 </div>
             </article>
 
         </div>
     </section>
 
-    {{-- Dashboard columns --}}
     <div class="admin-dashboard-grid">
 
-        {{-- Recent content --}}
         <section class="admin-panel">
             <div class="admin-panel-header">
                 <div>
-                    <h2>آخرین مطالب</h2>
-                    <p>نمونه‌ای از محتوای سامانه</p>
-                </div>
-
-                <a href="{{ url('/admin/posts') }}" class="admin-text-link">
-                    مشاهده همه
-                    <span aria-hidden="true">←</span>
-                </a>
-            </div>
-
-            <div class="admin-table-wrapper">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>عنوان مطلب</th>
-                            <th>دسته‌بندی</th>
-                            <th>وضعیت</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="admin-table-title">
-                                    معرفی سامانه پرچم سرخ
-                                </div>
-                                <small class="admin-table-subtitle">
-                                    مطلب نمونه
-                                </small>
-                            </td>
-                            <td>معرفی</td>
-                            <td>
-                                <span class="admin-status admin-status-published">
-                                    منتشرشده
-                                </span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="admin-table-title">
-                                    راهنمای استفاده از سامانه
-                                </div>
-                                <small class="admin-table-subtitle">
-                                    مطلب نمونه
-                                </small>
-                            </td>
-                            <td>راهنما</td>
-                            <td>
-                                <span class="admin-status admin-status-draft">
-                                    پیش‌نویس
-                                </span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="admin-table-title">
-                                    پرسش‌های متداول
-                                </div>
-                                <small class="admin-table-subtitle">
-                                    مطلب نمونه
-                                </small>
-                            </td>
-                            <td>اطلاع‌رسانی</td>
-                            <td>
-                                <span class="admin-status admin-status-published">
-                                    منتشرشده
-                                </span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="admin-table-title">
-                                    درباره پرچم سرخ
-                                </div>
-                                <small class="admin-table-subtitle">
-                                    مطلب نمونه
-                                </small>
-                            </td>
-                            <td>معرفی</td>
-                            <td>
-                                <span class="admin-status admin-status-review">
-                                    در انتظار بررسی
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="admin-panel-footer">
-                اطلاعات جدول صرفاً جهت نمایش رابط کاربری است.
-            </div>
-        </section>
-
-        {{-- Quick access --}}
-        <section class="admin-panel">
-            <div class="admin-panel-header">
-                <div>
-                    <h2>دسترسی سریع</h2>
-                    <p>میان‌بر بخش‌های عمومی مدیریت محتوا</p>
+                    <h2>وضعیت حساب‌های کاربری</h2>
+                    <p>تفکیک حساب‌ها بر اساس وضعیت تأیید مدیریت</p>
                 </div>
             </div>
 
             <div class="admin-quick-links">
 
-                <a href="{{ url('/admin/pages') }}" class="admin-quick-link">
-                    <span class="admin-quick-icon admin-quick-icon-green">
-                        ▤
-                    </span>
+                <div class="admin-quick-link">
+                    <span class="admin-quick-icon admin-quick-icon-green">✓</span>
 
                     <span class="admin-quick-text">
-                        <strong>مدیریت صفحات</strong>
-                        <small>مشاهده صفحات سایت</small>
+                        <strong>حساب‌های تأییدشده</strong>
+                        <small>کاربرانی که مدیریت حساب آن‌ها را تأیید کرده است</small>
                     </span>
 
-                    <span class="admin-quick-arrow" aria-hidden="true">←</span>
-                </a>
+                    <strong>
+                        {{ isset($stats['approved_accounts']) ? number_format($stats['approved_accounts']) : '—' }}
+                    </strong>
+                </div>
 
-                <a href="{{ url('/admin/posts') }}" class="admin-quick-link">
-                    <span class="admin-quick-icon admin-quick-icon-blue">
-                        ▧
-                    </span>
+                <div class="admin-quick-link">
+                    <span class="admin-quick-icon admin-quick-icon-orange">◷</span>
 
                     <span class="admin-quick-text">
-                        <strong>مدیریت مطالب</strong>
-                        <small>مشاهده اخبار و مطالب</small>
+                        <strong>حساب‌های در انتظار بررسی</strong>
+                        <small>کاربرانی که هنوز تأیید نهایی نشده‌اند</small>
                     </span>
 
-                    <span class="admin-quick-arrow" aria-hidden="true">←</span>
-                </a>
+                    <strong>
+                        {{ isset($stats['pending_accounts']) ? number_format($stats['pending_accounts']) : '—' }}
+                    </strong>
+                </div>
 
-                <a href="{{ url('/admin/categories') }}" class="admin-quick-link">
-                    <span class="admin-quick-icon admin-quick-icon-orange">
-                        ▦
-                    </span>
+                <div class="admin-quick-link">
+                    <span class="admin-quick-icon admin-quick-icon-red">×</span>
 
                     <span class="admin-quick-text">
-                        <strong>دسته‌بندی‌ها</strong>
-                        <small>مشاهده دسته‌بندی‌های محتوا</small>
+                        <strong>حساب‌های ردشده</strong>
+                        <small>حساب‌هایی که درخواست تأیید آن‌ها رد شده است</small>
                     </span>
 
-                    <span class="admin-quick-arrow" aria-hidden="true">←</span>
-                </a>
+                    <strong>
+                        {{ isset($stats['rejected_accounts']) ? number_format($stats['rejected_accounts']) : '—' }}
+                    </strong>
+                </div>
 
-                <a href="{{ url('/admin/media') }}" class="admin-quick-link">
-                    <span class="admin-quick-icon admin-quick-icon-red">
-                        ▣
-                    </span>
+            </div>
+        </section>
+
+        <section class="admin-panel">
+            <div class="admin-panel-header">
+                <div>
+                    <h2>بخش‌های مدیریت</h2>
+                    <p>دسترسی به بخش‌های اصلی پنل</p>
+                </div>
+            </div>
+
+            <div class="admin-quick-links">
+
+                <div class="admin-quick-link">
+                    <span class="admin-quick-icon admin-quick-icon-green">♙</span>
 
                     <span class="admin-quick-text">
-                        <strong>کتابخانه رسانه</strong>
-                        <small>مشاهده فایل‌های عمومی</small>
+                        <strong>مدیریت کاربران</strong>
+                        <small>مشاهده و مدیریت حساب‌های سامانه</small>
                     </span>
+                </div>
 
-                    <span class="admin-quick-arrow" aria-hidden="true">←</span>
-                </a>
+                <div class="admin-quick-link">
+                    <span class="admin-quick-icon admin-quick-icon-orange">✓</span>
+
+                    <span class="admin-quick-text">
+                        <strong>بررسی حساب‌ها</strong>
+                        <small>بررسی وضعیت و تأیید حساب همراه‌یاران و همراه‌جویان</small>
+                    </span>
+                </div>
+
+                <div class="admin-quick-link">
+                    <span class="admin-quick-icon admin-quick-icon-blue">⚙</span>
+
+                    <span class="admin-quick-text">
+                        <strong>مدیریت دسترسی‌ها</strong>
+                        <small>مدیریت نقش‌ها و سطح دسترسی مدیران</small>
+                    </span>
+                </div>
 
             </div>
         </section>
 
     </div>
 
-    {{-- Recent activity --}}
     <section class="admin-panel admin-activity-panel">
         <div class="admin-panel-header">
             <div>
-                <h2>فعالیت‌های اخیر</h2>
-                <p>رویدادهای نمونه در بخش مدیریت محتوا</p>
+                <h2>راهنمای بررسی حساب‌ها</h2>
+                <p>مراحل تأیید حساب کاربران</p>
             </div>
-
-            <span class="admin-demo-label">داده آزمایشی</span>
         </div>
 
         <div class="admin-activity-list">
@@ -316,47 +225,37 @@
                 <span class="admin-activity-marker admin-activity-marker-green"></span>
 
                 <div class="admin-activity-content">
-                    <strong>یک صفحه محتوایی منتشر شد</strong>
-                    <small>رویداد نمایشی</small>
+                    <strong>بررسی اطلاعات ثبت‌نام</strong>
+                    <small>
+                        اطلاعات هویتی، شماره همراه و اطلاعات خودرو در صورت وجود بررسی شود.
+                    </small>
                 </div>
-
-                <time>امروز</time>
             </div>
 
             <div class="admin-activity-item">
                 <span class="admin-activity-marker admin-activity-marker-blue"></span>
 
                 <div class="admin-activity-content">
-                    <strong>اطلاعات یک مطلب ویرایش شد</strong>
-                    <small>رویداد نمایشی</small>
+                    <strong>بررسی دستی مدارک</strong>
+                    <small>
+                        مدارک ارسالی از طریق پیام‌رسان بله بررسی می‌شوند.
+                        تصاویر مدارک در سایت ذخیره نمی‌شوند.
+                    </small>
                 </div>
-
-                <time>دیروز</time>
             </div>
 
             <div class="admin-activity-item">
                 <span class="admin-activity-marker admin-activity-marker-orange"></span>
 
                 <div class="admin-activity-content">
-                    <strong>یک دسته‌بندی به فهرست نمونه اضافه شد</strong>
-                    <small>رویداد نمایشی</small>
+                    <strong>ثبت نتیجه بررسی</strong>
+                    <small>
+                        پس از بررسی، وضعیت حساب توسط مدیریت تأیید یا رد می‌شود.
+                    </small>
                 </div>
-
-                <time>۲ روز قبل</time>
             </div>
 
         </div>
     </section>
-
-    {{-- Demo notice --}}
-    <div class="admin-demo-notice">
-        <span class="admin-demo-notice-icon" aria-hidden="true">i</span>
-
-        <p>
-            <strong>نسخه نمایشی:</strong>
-            آمار، مطالب و فعالیت‌های این داشبورد ساختگی هستند و به پایگاه داده
-            متصل نیستند. هیچ عملیات ثبت، ویرایش یا حذف واقعی انجام نمی‌شود.
-        </p>
-    </div>
 
 @endsection
