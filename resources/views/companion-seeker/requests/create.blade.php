@@ -42,8 +42,28 @@
             </div>
 
             <div class="grid gap-4 sm:grid-cols-2">
-                <div><label for="departure_at" class="mb-2 block text-sm font-bold">زمان حرکت</label><input id="departure_at" name="departure_at" type="datetime-local" value="{{ old('departure_at') }}" required class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm" dir="ltr"></div>
-                <div id="return-field" @if(old('type') !== 'round_trip') hidden @endif><label for="return_at" class="mb-2 block text-sm font-bold">زمان برگشت</label><input id="return_at" name="return_at" type="datetime-local" value="{{ old('return_at') }}" @required(old('type') === 'round_trip') class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm" dir="ltr"></div>
+                <div data-jalali-picker>
+                    <div data-jalali-ui hidden>
+                        <label for="departure_at_jalali" class="mb-2 block text-sm font-bold">تاریخ حرکت (شمسی)</label>
+                        <input id="departure_at_jalali" type="text" data-jalali-date autocomplete="off" inputmode="numeric" placeholder="۱۴۰۵/۰۱/۰۱" required class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm">
+                        <div data-jalali-calendar hidden class="mt-2 rounded-xl border border-gray-200 bg-white p-3 shadow-lg" role="dialog" aria-label="انتخاب تاریخ حرکت"></div>
+                        <label for="departure_at_time" class="mb-2 mt-3 block text-sm font-bold">ساعت حرکت</label>
+                        <input id="departure_at_time" type="time" data-jalali-time required class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm" dir="ltr">
+                    </div>
+                    <label data-jalali-fallback-label for="departure_at" class="mb-2 block text-sm font-bold">زمان حرکت</label>
+                    <input id="departure_at" name="departure_at" type="datetime-local" value="{{ old('departure_at') }}" required data-jalali-native class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm" dir="ltr">
+                </div>
+                <div id="return-field" @if(old('type') !== 'round_trip') hidden @endif data-jalali-picker>
+                    <div data-jalali-ui hidden>
+                        <label for="return_at_jalali" class="mb-2 block text-sm font-bold">تاریخ برگشت (شمسی)</label>
+                        <input id="return_at_jalali" type="text" data-jalali-date autocomplete="off" inputmode="numeric" placeholder="۱۴۰۵/۰۱/۰۱" required class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm">
+                        <div data-jalali-calendar hidden class="mt-2 rounded-xl border border-gray-200 bg-white p-3 shadow-lg" role="dialog" aria-label="انتخاب تاریخ برگشت"></div>
+                        <label for="return_at_time" class="mb-2 mt-3 block text-sm font-bold">ساعت برگشت</label>
+                        <input id="return_at_time" type="time" data-jalali-time required class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm" dir="ltr">
+                    </div>
+                    <label data-jalali-fallback-label for="return_at" class="mb-2 block text-sm font-bold">زمان برگشت</label>
+                    <input id="return_at" name="return_at" type="datetime-local" value="{{ old('return_at') }}" data-jalali-native @required(old('type') === 'round_trip') class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm" dir="ltr">
+                </div>
             </div>
 
             <div>
@@ -70,8 +90,17 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateReturnField() {
         const roundTrip = document.querySelector('input[name="type"]:checked')?.value === 'round_trip';
         returnField.hidden = !roundTrip;
-        returnInput.required = roundTrip;
-        if (!roundTrip) returnInput.value = '';
+        returnInput.disabled = !roundTrip;
+        returnInput.required = roundTrip && returnInput.type !== 'hidden';
+        const dateInput = returnField.querySelector('[data-jalali-date]');
+        const timeInput = returnField.querySelector('[data-jalali-time]');
+        if (dateInput) { dateInput.disabled = !roundTrip; dateInput.required = roundTrip; }
+        if (timeInput) { timeInput.disabled = !roundTrip; timeInput.required = roundTrip; }
+        if (!roundTrip) {
+            returnInput.value = '';
+            if (dateInput) dateInput.value = '';
+            if (timeInput) timeInput.value = '';
+        }
     }
     typeInputs.forEach(input => input.addEventListener('change', updateReturnField));
     updateReturnField();
