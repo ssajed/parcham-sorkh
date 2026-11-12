@@ -28,7 +28,7 @@
                     <div class="mt-5 grid gap-4 sm:grid-cols-2">
                         <div><p class="text-xs text-gray-500">مبدأ</p><p class="mt-1 font-black text-gray-900">{{ $item->origin_city }} - {{ $item->origin_location }}</p></div>
                         <div><p class="text-xs text-gray-500">مقصد</p><p class="mt-1 font-black text-gray-900">{{ $item->destination_city }} - {{ $item->destination_location }}</p></div>
-                        <div><p class="text-xs text-gray-500">زمان حرکت</p><p class="mt-1 font-bold text-gray-800">{{ $item->departure_at?->format('Y/m/d H:i') }}</p></div>
+                        <div><p class="text-xs text-gray-500">زمان حرکت</p><p class="mt-1 font-bold text-gray-800">{{ \App\Support\JalaliDate::format($item->departure_at, 'Y/m/d H:i') }}</p></div>
                         <div><p class="text-xs text-gray-500">نوع همراهی</p><p class="mt-1 font-bold text-gray-800">{{ $item->isRoundTrip() ? 'رفت‌وبرگشت' : 'یک‌طرفه' }}</p></div>
                         @if($item->isRoundTrip())
                             <div><p class="text-xs text-gray-500">زمان برگشت</p><p class="mt-1 font-bold text-gray-800">{{ $item->return_at?->format('Y/m/d H:i') }}</p></div>
