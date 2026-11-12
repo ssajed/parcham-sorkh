@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\EnsureAdmin;
+use App\Http\Middleware\EnsureApprovedCompanionSeeker;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -15,10 +16,13 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'admin' => EnsureAdmin::class,
+            'companion-access' => EnsureApprovedCompanionSeeker::class,
         ]);
 
         $middleware->redirectGuestsTo(
-            fn (Request $request): string => route('admin.login')
+            fn (Request $request): string => $request->is('admin', 'admin/*')
+                ? route('admin.login')
+                : route('companion-seeker.login')
         );
     })
     ->withExceptions(function (Exceptions $exceptions): void {

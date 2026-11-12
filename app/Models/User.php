@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Modules\Accompaniment\Models\AccompanimentRequest;
+use App\Modules\Auth\Models\CompanionRoleChangeRequest;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -30,22 +33,13 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     public const ROLE_ADMIN = 'admin';
-
     public const ROLE_COMPANION_SEEKER = 'companion_seeker';
-
     public const ROLE_COMPANION_HELPER = 'companion_helper';
 
     public const ACCOUNT_STATUS_PENDING = 'pending';
-
     public const ACCOUNT_STATUS_APPROVED = 'approved';
-
     public const ACCOUNT_STATUS_REJECTED = 'rejected';
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -53,7 +47,27 @@ class User extends Authenticatable
             'mobile_verified_at' => 'datetime',
             'account_approved_at' => 'datetime',
             'password' => 'hashed',
+            'can_be_companion_seeker' => 'boolean',
+            'can_be_companion_helper' => 'boolean',
         ];
+    }
+
+    /** @return HasMany<AccompanimentRequest, $this> */
+    public function accompanimentRequests(): HasMany
+    {
+        return $this->hasMany(AccompanimentRequest::class, 'user_id');
+    }
+
+    /** @return HasMany<CompanionRoleChangeRequest, $this> */
+    public function companionRoleChangeRequests(): HasMany
+    {
+        return $this->hasMany(CompanionRoleChangeRequest::class, 'user_id');
+    }
+
+    /** @return HasMany<CompanionRoleChangeRequest, $this> */
+    public function reviewedCompanionRoleChangeRequests(): HasMany
+    {
+        return $this->hasMany(CompanionRoleChangeRequest::class, 'reviewed_by');
     }
 
     public function isAdmin(): bool
@@ -80,13 +94,13 @@ class User extends Authenticatable
     public function isCompanionSeeker(): bool
     {
         return $this->isAccountApproved()
-            && $this->role === self::ROLE_COMPANION_SEEKER;
+            && (bool) $this->can_be_companion_seeker;
     }
 
     public function isCompanionHelper(): bool
     {
         return $this->isAccountApproved()
-            && $this->role === self::ROLE_COMPANION_HELPER;
+            && (bool) $this->can_be_companion_helper;
     }
 
     public function hasVerifiedMobile(): bool

@@ -3,8 +3,8 @@
 namespace App\Modules\Auth\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Modules\Auth\Requests\RegisterRequest;
 use App\Models\User;
+use App\Modules\Auth\Requests\RegisterRequest;
 use Illuminate\Http\RedirectResponse;
 
 class RegisterController extends Controller
@@ -20,6 +20,14 @@ class RegisterController extends Controller
         $user->mobile = $validated['mobile'];
         $user->password = $validated['password'];
         $user->role = $validated['role'];
+
+        // Initial access is determined only by the validated registration role.
+        // Additional access can be granted later only after admin review.
+        $user->can_be_companion_seeker =
+            $validated['role'] === User::ROLE_COMPANION_SEEKER;
+
+        $user->can_be_companion_helper =
+            $validated['role'] === User::ROLE_COMPANION_HELPER;
 
         if ($validated['role'] === User::ROLE_COMPANION_HELPER) {
             $user->vehicle_model = $validated['vehicle_model'];
@@ -37,11 +45,8 @@ class RegisterController extends Controller
             $user->vehicle_plate = null;
         }
 
-        // حساب جدید در انتظار بررسی و تأیید مدیریت است.
         $user->account_status = User::ACCOUNT_STATUS_PENDING;
         $user->account_approved_at = null;
-
-        // تا زمان اتصال سرویس پیامکی، موبایل تأییدنشده باقی می‌ماند.
         $user->mobile_verified_at = null;
 
         $user->save();
