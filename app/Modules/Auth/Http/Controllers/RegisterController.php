@@ -45,6 +45,9 @@ class RegisterController extends Controller
             $user->vehicle_plate = null;
         }
 
+        $user->terms_accepted_at = now();
+        $user->terms_version = '2026-11-12-v1';
+
         $user->account_status = User::ACCOUNT_STATUS_PENDING;
         $user->account_approved_at = null;
         $user->mobile_verified_at = null;
