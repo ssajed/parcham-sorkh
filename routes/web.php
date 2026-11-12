@@ -55,14 +55,14 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
 
 // Shared sign-in for companion seekers and companion helpers.
 Route::prefix('companion')->name('companion-seeker.')->group(function (): void {
-    Route::middleware('guest')->group(function (): void {
-        Route::get('/login', [CompanionSeekerLoginController::class, 'create'])
-            ->name('login');
+    // Keep the login form accessible even if an old authenticated session exists.
+    // Only the credential submission endpoint is restricted to guests.
+    Route::get('/login', [CompanionSeekerLoginController::class, 'create'])
+        ->name('login');
 
-        Route::post('/login', [CompanionSeekerLoginController::class, 'store'])
-            ->middleware('throttle:5,1')
-            ->name('login.store');
-    });
+    Route::post('/login', [CompanionSeekerLoginController::class, 'store'])
+        ->middleware(['guest', 'throttle:5,1'])
+        ->name('login.store');
 
     Route::post('/logout', [CompanionSeekerLoginController::class, 'destroy'])
         ->middleware(['auth', 'companion-access'])
