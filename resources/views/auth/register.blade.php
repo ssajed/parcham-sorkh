@@ -378,6 +378,10 @@
             <p class="mt-3 text-sm leading-7 text-gray-600">
                 برای پیوستن به جمع همراه‌جویان و همراه‌یاران، اطلاعات خود را وارد کنید.
             </p>
+            <div class="mt-4 flex flex-wrap justify-center gap-3 text-sm">
+                <a href="{{ route('companion-seeker.login') }}" class="font-bold text-green-800 underline">قبلاً حساب ساخته‌اید؟ ورود</a>
+                <a href="{{ route('home') }}" class="text-gray-500 underline">بازگشت به صفحه اصلی</a>
+            </div>
 
         </header>
 
