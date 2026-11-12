@@ -239,7 +239,7 @@ class AccompanimentRequestController extends Controller
             ]);
 
             $accompanimentRequest->offers()
-                ->whereKeyNot($offer->id)
+                ->where('id', '!=', $offer->id)
                 ->where('status', AccompanimentOffer::STATUS_PENDING)
                 ->update([
                     'status' => AccompanimentOffer::STATUS_REJECTED,
