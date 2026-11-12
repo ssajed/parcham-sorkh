@@ -17,7 +17,7 @@ class CompanionSeekerLoginController extends Controller
 {
     public function create(): View
     {
-        return view('companion-seeker.auth.login');
+        return view('auth.companion-login');
     }
 
     /**
