@@ -244,8 +244,8 @@
                         </div>
 
                         <div class="admin-user-info">
-                            <strong>بخش مدیریت</strong>
-                            <small>سامانه پرچم سرخ</small>
+                            <strong>{{ auth()->user()?->name ?: 'مدیر سامانه' }}</strong>
+                            <small>مدیر سامانه</small>
                         </div>
 
                     </div>

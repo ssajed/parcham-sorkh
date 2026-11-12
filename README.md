@@ -1,58 +1,68 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# پرچم سرخ
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+سامانه همراهی داوطلبانه با شعار «با پرچم سرخ به خیابان بیایید».
 
-## About Laravel
+پرچم سرخ یک پلتفرم همراهی داوطلبانه است؛ نه تاکسی اینترنتی، آژانس یا سرویس حمل‌ونقل تجاری. اصطلاحات محصول شامل **همراه‌جو** (درخواست‌کننده)، **همراه‌یار** (فرد داوطلب) و **درخواست همراهی** است.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## فناوری‌ها
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Laravel 13 و PHP 8.3 یا بالاتر (محیط CI با PHP 8.5)
+- MySQL برای محیط عملیاتی
+- Tailwind CSS 4 و Vite
+- فونت Vazirmatn و رابط فارسی RTL
+- پشتیبانی تاریخ شمسی با morilog/jalali در سمت PHP و تقویم اختصاصی مرورگر
+- PWA با cache محدود به assetهای استاتیک و صفحه عمومی آفلاین
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## راه‌اندازی محیط توسعه
 
-## Learning Laravel
+1. مخزن را دریافت کنید.
+2. وابستگی‌های PHP را با composer install نصب کنید.
+3. فایل محیطی را از روی نمونه بسازید: cp .env.example .env (در ویندوز می‌توان از Copy-Item .env.example .env استفاده کرد).
+4. کلید برنامه را بسازید: php artisan key:generate.
+5. تنظیمات اتصال پایگاه داده را در فایل محیطی وارد کنید.
+6. Migrationها را اجرا کنید: php artisan migrate.
+7. وابستگی‌های فرانت‌اند را با npm ci نصب کنید.
+8. assetها را بسازید: npm run build.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+در ویندوز با Laragon، مسیر PHP نصب‌شده ممکن است در PATH نباشد؛ در این حالت فرمان‌های Artisan را با مسیر کامل فایل اجرایی PHP اجرا کنید.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## ایجاد نخستین مدیر
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+پس از اجرای Migrationها، فرمان زیر نخستین مدیر را به‌صورت تعاملی ایجاد می‌کند:
 
-## Agentic Development
+    php artisan app:create-admin-user
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+این فرمان اگر حسابی با نقش مدیر از قبل وجود داشته باشد، از ایجاد مدیر اولیه دیگری جلوگیری می‌کند. رمز عبور در ورودی مخفی دریافت می‌شود.
 
-```bash
-composer require laravel/boost --dev
+مدیران بعدی از پنل مدیریت و فقط با ارتقای یک حساب موجود و تأییدشده تعریف می‌شوند. حذف دسترسی آخرین مدیر فعال و حذف دسترسی مدیر واردشده از طریق پنل مجاز نیست.
 
-php artisan boost:install
-```
+## ساختار معماری
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+پروژه از الگوی Modular Monolith استفاده می‌کند. مسئولیت‌های اصلی در ماژول‌های زیر قرار گرفته‌اند:
 
-## Contributing
+- app/Modules/Auth: ثبت‌نام و احراز هویت
+- app/Modules/Accounts: پروفایل و حساب‌ها
+- app/Modules/Admin: پنل مدیریت
+- app/Modules/Accompaniment: درخواست همراهی
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+جزئیات مرزبندی ماژول‌ها، قواعد وابستگی و سیاست‌های فنی در docs/ARCHITECTURE.md آمده است.
 
-## Code of Conduct
+## تست و کنترل کیفیت
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    php artisan test
+    npm run build
 
-## Security Vulnerabilities
+تست‌ها در CI با PHP 8.5، SQLite in-memory و Node.js 22 اجرا می‌شوند. قبل از ثبت تغییرات، git diff --check نیز اجرا شود.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## نکات عملیاتی و امنیتی
 
-## License
+- فایل .env و اطلاعات محرمانه نباید وارد Git شوند.
+- تصاویر کارت ملی و کارت خودرو در وب‌سایت ذخیره نمی‌شوند؛ بررسی مدارک طبق فرایند پروژه از طریق پیام‌رسان بله انجام می‌شود.
+- اطلاعات خودرو و پلاک در پایگاه داده نگهداری می‌شوند.
+- Service Worker فقط assetهای استاتیک مجاز و صفحه عمومی آفلاین را cache می‌کند؛ صفحات خصوصی و داده‌های کاربران نباید cache شوند.
+- محیط عملیاتی باید HTTPS داشته باشد.
+- پیش از انتشار عمومی، متن قوانین و سیاست‌های حریم خصوصی باید بازبینی حقوقی شوند.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## محدوده فعلی
+
+وجود زیرساخت، فرم یا صفحه مدیریتی به معنی تکمیل همه گردش‌های کسب‌وکار نیست. چرخه کامل اعلام آمادگی همراه‌یار، توافق مستقل برای هر حرکت، رزرو ظرفیت، شروع و پایان همراهی، امتیازدهی، گزارش تخلف و پیامک واقعی در فازهای بعدی تکمیل می‌شوند.

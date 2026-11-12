@@ -42,7 +42,7 @@
         <div class="admin-section-heading">
             <div>
                 <h2>آمار کاربران</h2>
-                <p>آمار واقعی پس از اتصال داشبورد به پایگاه داده نمایش داده می‌شود.</p>
+                <p>این آمار مستقیماً از حساب‌های ثبت‌شده در پایگاه داده محاسبه می‌شود.</p>
             </div>
         </div>
 
@@ -179,32 +179,32 @@
 
             <div class="admin-quick-links">
 
-                <div class="admin-quick-link">
+                <a href="{{ route('admin.users.index') }}" class="admin-quick-link">
                     <span class="admin-quick-icon admin-quick-icon-green">♙</span>
 
                     <span class="admin-quick-text">
                         <strong>مدیریت کاربران</strong>
                         <small>مشاهده و مدیریت حساب‌های سامانه</small>
                     </span>
-                </div>
+                </a>
 
-                <div class="admin-quick-link">
+                <a href="{{ route('admin.accounts.pending') }}" class="admin-quick-link">
                     <span class="admin-quick-icon admin-quick-icon-orange">✓</span>
 
                     <span class="admin-quick-text">
                         <strong>بررسی حساب‌ها</strong>
                         <small>بررسی وضعیت و تأیید حساب همراه‌یاران و همراه‌جویان</small>
                     </span>
-                </div>
+                </a>
 
-                <div class="admin-quick-link">
+                <a href="{{ route('admin.roles.index') }}" class="admin-quick-link">
                     <span class="admin-quick-icon admin-quick-icon-blue">⚙</span>
 
                     <span class="admin-quick-text">
                         <strong>مدیریت دسترسی‌ها</strong>
                         <small>مدیریت نقش‌ها و سطح دسترسی مدیران</small>
                     </span>
-                </div>
+                </a>
 
             </div>
         </section>

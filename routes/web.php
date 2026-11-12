@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\Admin\Http\Controllers\AdminAdministratorController;
+use App\Modules\Admin\Http\Controllers\AdminDashboardController;
 use App\Modules\Admin\Http\Controllers\AdminPendingAccountController;
 use App\Modules\Admin\Http\Controllers\AdminRoleController;
 use App\Modules\Admin\Http\Controllers\AdminUserController;
@@ -29,13 +30,20 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
         ->name('logout');
 
     Route::middleware(['auth', 'admin'])->group(function (): void {
-        Route::view('/', 'admin.dashboard')->name('dashboard');
+        Route::get('/', AdminDashboardController::class)->name('dashboard');
 
         Route::get('/users', [AdminUserController::class, 'index'])
             ->name('users.index');
 
         Route::get('/administrators', [AdminAdministratorController::class, 'index'])
             ->name('administrators.index');
+
+        Route::post('/administrators', [AdminAdministratorController::class, 'store'])
+            ->name('administrators.store');
+
+        Route::post('/administrators/{user}/revoke', [AdminAdministratorController::class, 'destroy'])
+            ->whereNumber('user')
+            ->name('administrators.revoke');
 
         Route::get('/roles', [AdminRoleController::class, 'index'])
             ->name('roles.index');
