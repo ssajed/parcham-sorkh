@@ -69,6 +69,22 @@ Route::prefix('companion')->name('companion-seeker.')->group(function (): void {
     Route::middleware(['auth', 'companion-access'])->group(function (): void {
         Route::view('/dashboard', 'companion-seeker.dashboard')
             ->name('dashboard');
+
+        Route::get('/profile/seeker', [CompanionProfileController::class, 'seeker'])
+            ->name('profile.seeker');
+
+        Route::get('/profile/helper', [CompanionProfileController::class, 'helper'])
+            ->name('profile.helper');
+
+        Route::get('/requests', [AccompanimentRequestController::class, 'index'])
+            ->name('requests.index');
+
+        Route::get('/requests/create', [AccompanimentRequestController::class, 'create'])
+            ->name('requests.create');
+
+        Route::post('/requests', [AccompanimentRequestController::class, 'store'])
+            ->middleware('throttle:10,1')
+            ->name('requests.store');
     });
 });
 
