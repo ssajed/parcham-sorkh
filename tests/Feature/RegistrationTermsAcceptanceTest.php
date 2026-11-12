@@ -25,6 +25,54 @@ class RegistrationTermsAcceptanceTest extends TestCase
         $this->assertDatabaseCount('users', 0);
     }
 
+    public function test_helper_registration_requires_vehicle_capacity(): void
+    {
+        $response = $this->from('/register')->post('/register', [
+            'name' => 'همراه‌یار آزمایشی',
+            'national_code' => '0012345679',
+            'mobile' => '09123456789',
+            'password' => 'SecurePass123',
+            'password_confirmation' => 'SecurePass123',
+            'role' => 'companion_helper',
+            'vehicle_model' => 'پژو ۲۰۶',
+            'vehicle_plate_region' => '12',
+            'vehicle_plate_three' => '345',
+            'vehicle_plate_letter' => 'ب',
+            'vehicle_plate_last' => '67',
+            'accepted_terms' => '1',
+        ]);
+
+        $response->assertRedirect('/register');
+        $response->assertSessionHasErrors('vehicle_capacity');
+        $this->assertDatabaseCount('users', 0);
+    }
+
+    public function test_helper_registration_stores_vehicle_capacity(): void
+    {
+        $response = $this->from('/register')->post('/register', [
+            'name' => 'همراه‌یار آزمایشی',
+            'national_code' => '0012345679',
+            'mobile' => '09123456789',
+            'password' => 'SecurePass123',
+            'password_confirmation' => 'SecurePass123',
+            'role' => 'companion_helper',
+            'vehicle_model' => 'پژو ۲۰۶',
+            'vehicle_plate_region' => '12',
+            'vehicle_plate_three' => '345',
+            'vehicle_plate_letter' => 'ب',
+            'vehicle_plate_last' => '67',
+            'vehicle_capacity' => '3',
+            'accepted_terms' => '1',
+        ]);
+
+        $response->assertRedirect('/register');
+        $this->assertDatabaseHas('users', [
+            'mobile' => '09123456789',
+            'vehicle_capacity' => 3,
+            'terms_version' => '2026-11-12-v1',
+        ]);
+    }
+
     public function test_registration_records_the_accepted_terms_version_and_time(): void
     {
         $response = $this->from('/register')->post('/register', [
