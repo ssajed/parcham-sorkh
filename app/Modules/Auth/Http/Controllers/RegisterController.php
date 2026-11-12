@@ -31,6 +31,7 @@ class RegisterController extends Controller
 
         if ($validated['role'] === User::ROLE_COMPANION_HELPER) {
             $user->vehicle_model = $validated['vehicle_model'];
+            $user->vehicle_capacity = (int) $validated['vehicle_capacity'];
 
             // ترتیب ذخیره پلاک: کد ایران - سه رقم + حرف + دو رقم
             $user->vehicle_plate = sprintf(
@@ -42,6 +43,7 @@ class RegisterController extends Controller
             );
         } else {
             $user->vehicle_model = null;
+            $user->vehicle_capacity = null;
             $user->vehicle_plate = null;
         }
 
